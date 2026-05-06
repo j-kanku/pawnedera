@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PAWNED — Luxury streetwear. From Pawn to King." />
+  <title>PAWNED | From Pawn to King</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Bebas+Neue&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-text">PAWNED</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="mens.html" class="nav-link">MEN</a></li>
+      <li><a href="womens.html" class="nav-link">WOMEN</a></li>
+      <li><a href="#manifesto" class="nav-link">MANIFESTO</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="icon-btn" id="cartBtn" aria-label="Cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">&#10005;</button>
+  <ul>
+    <li><a href="mens.html" class="mobile-link">MEN</a></li>
+    <li><a href="womens.html" class="mobile-link">WOMEN</a></li>
+    <li><a href="#manifesto" class="mobile-link">MANIFESTO</a></li>
+  </ul>
+  <div class="mobile-bottom">
+    <p class="chess-quote">"From Pawn to King"</p>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-split">
+    <div class="hero-panel hero-panel--left" onclick="window.location='mens.html'">
+      <div class="hero-img-wrap">
+        <img src="back1.jpeg" alt="PAWNED Mens Collection" />
+      </div>
+      <div class="hero-content">
+        <p class="hero-eyebrow">FROM PAWN TO KING</p>
+        <h1 class="hero-title">PAWNED</h1>
+        <p class="hero-sub">MEN'S COLLECTION</p>
+        <span class="hero-cta">SHOP MEN</span>
+      </div>
+    </div>
+    <div class="hero-panel hero-panel--right" onclick="window.location='womens.html'">
+      <div class="hero-img-wrap">
+        <img src="back2.jpeg" alt="PAWNEDORA Womens Collection" />
+      </div>
+      <div class="hero-content">
+        <p class="hero-eyebrow">FROM PAWN TO QUEEN</p>
+        <h1 class="hero-title hero-title--italic">PAWNEDORA</h1>
+        <p class="hero-sub">WOMEN'S COLLECTION</p>
+        <span class="hero-cta">SHOP WOMEN</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>SCROLL</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span>FROM PAWN TO KING</span>
+    <span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
+    <span>LUXURY STREETWEAR</span>
+    <span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
+    <span>EARNED SUCCESS</span>
+    <span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
+    <span>RESILIENCE AND AMBITION</span>
+    <span class="ticker-sep">&nbsp;&nbsp;&#9819;&nbsp;&nbsp;</span>
+    <span>FROM PAWN TO QUEEN</span>
+    <span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
+    <span>PAWNEDORA</span>
+    <span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
+    <span>FROM PAWN TO KING</span>
+    <span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
+    <span>LUXURY STREETWEAR</span>
+    <span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
+    <span>EARNED SUCCESS</span>
+    <span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
+    <span>RESILIENCE AND AMBITION</span>
+    <span class="ticker-sep">&nbsp;&nbsp;&#9819;&nbsp;&nbsp;</span>
+    <span>FROM PAWN TO QUEEN</span>
+    <span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
+    <span>PAWNEDORA</span>
+    <span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
+  </div>
+</div>
+
+<!-- MANIFESTO -->
+<section class="manifesto" id="manifesto">
+  <div class="manifesto-inner">
+    <p class="manifesto-label">THE MANIFESTO</p>
+    <h2 class="manifesto-heading">
+      <span class="line">Every King was once</span>
+      <span class="line line--italic">a Pawn.</span>
+    </h2>
+    <p class="manifesto-body">
+      PAWNED is not just a brand. It is a movement. Built for those who started at the bottom of the board and moved with purpose, strategy, and relentless will. Every stitch is a step. Every piece earned. From Pawn to King. From Pawn to Queen.
+    </p>
+    <div class="manifesto-divider"><span>&#9817;</span></div>
+  </div>
+</section>
+
+<!-- BRAND STRIP -->
+<section class="brand-strip">
+  <div class="brand-strip-inner">
+    <div class="brand-strip-left">
+      <p class="brand-strip-eyebrow">THE STORY</p>
+      <h2 class="brand-strip-title">Built on<br/><em>Every Move.</em></h2>
+    </div>
+    <div class="brand-strip-right">
+      <p>We started from the bottom of the board. No shortcuts. No favors. Just strategy, patience, and an unrelenting drive to reach the other side. PAWNED is proof that the piece with the least power can become the most powerful on the board.</p>
+      <p>Every drop is a chapter. Every piece tells a story.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section">
+  <p class="section-label">&#9817; THE WORLD OF PAWNED &#9817;</p>
+  <div class="gallery-grid">
+    <div class="gallery-item"><img src="gallery1.jpg" alt="PAWNED Gallery 1" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 01</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery2.jpg" alt="PAWNED Gallery 2" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 02</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery3.jpg" alt="PAWNED Gallery 3" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 03</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery4.jpg" alt="PAWNED Gallery 4" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 04</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery5.jpg" alt="PAWNED Gallery 5" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 05</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery6.jpg" alt="PAWNED Gallery 6" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 06</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery7.jpg" alt="PAWNED Gallery 7" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 07</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery8.jpg" alt="PAWNED Gallery 8" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 08</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery9.jpg" alt="PAWNED Gallery 9" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 09</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery10.jpg" alt="PAWNED Gallery 10" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 10</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery11.jpg" alt="PAWNED Gallery 11" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 11</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery12.jpg" alt="PAWNED Gallery 12" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 12</span></div>'" /></div>
+  </div>
+</section>
+
+<!-- CART DRAWER -->
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h3>YOUR CART</h3>
+    <button class="cart-close" id="cartClose">&#10005;</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">
+      <span>&#9817;</span>
+      <p>Your cart is empty.<br/>Make your move.</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total">
+      <span>TOTAL</span>
+      <span id="cartTotal">R0</span>
+    </div>
+    <button class="checkout-btn" id="checkoutBtn">CHECKOUT</button>
+  </div>
+</aside>
+<div class="cart-overlay" id="cartOverlay"></div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="checkoutModal" style="display:none">
+  <div class="modal checkout-modal">
+    <button class="modal-close" id="checkoutClose">&#10005;</button>
+    <h2>CHECKOUT</h2>
+    <div class="checkout-steps">
+      <div class="checkout-step active" id="step1">
+        <h4>01 — CONTACT</h4>
+        <input class="form-input" type="email" placeholder="Email address" />
+        <input class="form-input" type="text" placeholder="Full name" />
+        <input class="form-input" type="tel" placeholder="Phone number" />
+      </div>
+      <div class="checkout-step" id="step2">
+        <h4>02 — DELIVERY</h4>
+        <input class="form-input" type="text" placeholder="Street address" />
+        <input class="form-input" type="text" placeholder="City" />
+        <input class="form-input" type="text" placeholder="Province" />
+        <input class="form-input" type="text" placeholder="Postal code" />
+      </div>
+      <div class="checkout-step" id="step3">
+        <h4>03 — PAYMENT</h4>
+        <div class="payment-options">
+          <label class="payment-option">
+            <input type="radio" name="payment" value="card" checked />
+            <span>Card Payment</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="payment" value="eft" />
+            <span>EFT / Bank Transfer</span>
+          </label>
+        </div>
+        <div class="bank-details" id="bankDetails" style="display:none">
+          <p class="bank-title">BANK DETAILS</p>
+          <div class="bank-row"><span>Bank</span><span>OM Bank</span></div>
+          <div class="bank-row"><span>Account No.</span><span>47979800153</span></div>
+          <div class="bank-row"><span>Reference</span><span>Your Order Number</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="checkout-nav">
+      <button class="checkout-prev" id="prevStep" style="display:none">BACK</button>
+      <button class="checkout-next" id="nextStep">CONTINUE</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal" style="display:none">
+  <div class="modal success-modal">
+    <div class="success-icon">&#9817;</div>
+    <h2>ORDER CONFIRMED</h2>
+    <p class="success-msg">Your move has been made. We will have it to you shortly.</p>
+    <div class="order-ref">ORDER NUMBER &nbsp;<span id="orderRef">PWN00001</span></div>
+    <div class="success-bank">
+      <p class="bank-title">PAYMENT DETAILS (IF EFT)</p>
+      <div class="bank-row"><span>Bank</span><span>OM Bank</span></div>
+      <div class="bank-row"><span>Account No.</span><span>47979800153</span></div>
+      <div class="bank-row"><span>Reference</span><span id="successOrderRef">PWN00001</span></div>
+    </div>
+    <button class="checkout-btn" id="successClose" style="margin-top:2rem">CONTINUE SHOPPING</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <span class="logo-icon">&#9817;</span>
+        <span class="logo-text">PAWNED</span>
+      </div>
+      <p class="footer-tagline">From Pawn to King.<br/>From Pawn to Queen.</p>
+      <div class="footer-social-links">
+        <a href="https://www.instagram.com/pawnedera?igsh=MWlwdnhzOWdtYW8xeA==" target="_blank" rel="noopener" class="footer-social-link">IG</a>
+        <a href="https://www.tiktok.com/@pawnedera?_r=1&_t=ZS-966a8vFQWyA" target="_blank" rel="noopener" class="footer-social-link">TK</a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>SHOP</h4>
+        <a href="mens.html">Men's Collection</a>
+        <a href="womens.html">Women's Collection</a>
+      </div>
+      <div class="footer-col">
+        <h4>INFO</h4>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>BRAND</h4>
+        <a href="#manifesto">Manifesto</a>
+        <a href="#">Our Story</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-bottom">
+    <p>2025 PAWNED. All rights reserved.</p>
+    <div class="footer-chess">&#9817; &#9820; &#9819;</div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+
+<!-- coded by Jesus NK Kanku -->
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PAWNED Bucket Hat — R150. One size fits all. One colour. All statement." />
+  <title>PAWNED | Bucket Hat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Bebas+Neue&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav scrolled" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <span class="logo-text">PAWNED</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="mens.html" class="nav-link">MEN</a></li>
+      <li><a href="womens.html" class="nav-link">WOMEN</a></li>
+      <li><a href="index.html#manifesto" class="nav-link">MANIFESTO</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="icon-btn" id="cartBtn" aria-label="Cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">&#10005;</button>
+  <ul>
+    <li><a href="mens.html" class="mobile-link">MEN</a></li>
+    <li><a href="womens.html" class="mobile-link">WOMEN</a></li>
+    <li><a href="index.html#manifesto" class="mobile-link">MANIFESTO</a></li>
+  </ul>
+  <div class="mobile-bottom">
+    <p class="chess-quote">"From Pawn to King"</p>
+  </div>
+</div>
+
+<!-- PRODUCT DETAIL -->
+<div class="product-detail">
+  <div class="product-detail-img">
+    <img src="hat.jpg" alt="PAWNED Bucket Hat"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+    <div class="product-detail-placeholder" style="display:none">
+      <span style="font-size:5rem;color:rgba(201,168,76,0.25)">&#9817;</span>
+      <span style="font-size:0.65rem;letter-spacing:0.15em;color:rgba(255,255,255,0.2)">PRODUCT IMAGE<br/>COMING SOON</span>
+    </div>
+  </div>
+
+  <div class="product-detail-info">
+    <p class="product-detail-eyebrow">ACCESSORIES</p>
+    <h1 class="product-detail-name">PAWNED<br/>Bucket Hat</h1>
+    <p class="product-detail-price">R150</p>
+
+    <p class="product-detail-desc">
+      One colour. One size. One statement. The PAWNED Bucket Hat is the signature piece for those who move with quiet confidence. Jet black with subtle PAWNED branding. No noise. Just presence.
+    </p>
+
+    <div class="product-detail-meta">
+      <p><strong>Colour</strong> &nbsp; Black</p>
+      <p><strong>Size</strong> &nbsp; One size fits all</p>
+      <p><strong>Material</strong> &nbsp; 100% Cotton twill</p>
+    </div>
+
+    <button class="add-to-cart-btn" id="addToCartBtn">ADD TO CART</button>
+
+    <div style="border-top:1px solid var(--grey-dark);padding-top:1.25rem;margin-top:0.5rem;">
+      <p style="font-size:0.7rem;color:var(--grey);letter-spacing:0.1em;line-height:1.7;">
+        EFT payments accepted — bank details provided at checkout.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- CART DRAWER -->
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h3>YOUR CART</h3>
+    <button class="cart-close" id="cartClose">&#10005;</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">
+      <span>&#9817;</span>
+      <p>Your cart is empty.<br/>Make your move.</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total">
+      <span>TOTAL</span>
+      <span id="cartTotal">R0</span>
+    </div>
+    <button class="checkout-btn" id="checkoutBtn">CHECKOUT</button>
+  </div>
+</aside>
+<div class="cart-overlay" id="cartOverlay"></div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="checkoutModal" style="display:none">
+  <div class="modal checkout-modal">
+    <button class="modal-close" id="checkoutClose">&#10005;</button>
+    <h2>CHECKOUT</h2>
+    <div class="checkout-steps">
+      <div class="checkout-step active" id="step1">
+        <h4>01 — CONTACT</h4>
+        <input class="form-input" type="email" placeholder="Email address" />
+        <input class="form-input" type="text" placeholder="Full name" />
+        <input class="form-input" type="tel" placeholder="Phone number" />
+      </div>
+      <div class="checkout-step" id="step2">
+        <h4>02 — DELIVERY</h4>
+        <input class="form-input" type="text" placeholder="Street address" />
+        <input class="form-input" type="text" placeholder="City" />
+        <input class="form-input" type="text" placeholder="Province" />
+        <input class="form-input" type="text" placeholder="Postal code" />
+      </div>
+      <div class="checkout-step" id="step3">
+        <h4>03 — PAYMENT</h4>
+        <div class="payment-options">
+          <label class="payment-option">
+            <input type="radio" name="payment" value="card" checked />
+            <span>Card Payment</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="payment" value="eft" />
+            <span>EFT / Bank Transfer</span>
+          </label>
+        </div>
+        <div class="bank-details" id="bankDetails" style="display:none">
+          <p class="bank-title">BANK DETAILS</p>
+          <div class="bank-row"><span>Bank</span><span>OM Bank</span></div>
+          <div class="bank-row"><span>Account No.</span><span>47979800153</span></div>
+          <div class="bank-row"><span>Reference</span><span>Your Order Number</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="checkout-nav">
+      <button class="checkout-prev" id="prevStep" style="display:none">BACK</button>
+      <button class="checkout-next" id="nextStep">CONTINUE</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal" style="display:none">
+  <div class="modal success-modal">
+    <div class="success-icon">&#9817;</div>
+    <h2>ORDER CONFIRMED</h2>
+    <p class="success-msg">Your move has been made. We will have it to you shortly.</p>
+    <div class="order-ref">ORDER NUMBER &nbsp;<span id="orderRef">PWN00001</span></div>
+    <div class="success-bank">
+      <p class="bank-title">PAYMENT DETAILS (IF EFT)</p>
+      <div class="bank-row"><span>Bank</span><span>OM Bank</span></div>
+      <div class="bank-row"><span>Account No.</span><span>47979800153</span></div>
+      <div class="bank-row"><span>Reference</span><span id="successOrderRef">PWN00001</span></div>
+    </div>
+    <button class="checkout-btn" id="successClose" style="margin-top:2rem">CONTINUE SHOPPING</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <span class="logo-icon">&#9817;</span>
+        <span class="logo-text">PAWNED</span>
+      </div>
+      <p class="footer-tagline">From Pawn to King.<br/>From Pawn to Queen.</p>
+      <div class="footer-social-links">
+        <a href="https://www.instagram.com/pawnedera?igsh=MWlwdnhzOWdtYW8xeA==" target="_blank" rel="noopener" class="footer-social-link">IG</a>
+        <a href="https://www.tiktok.com/@pawnedera?_r=1&_t=ZS-966a8vFQWyA" target="_blank" rel="noopener" class="footer-social-link">TK</a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>SHOP</h4>
+        <a href="mens.html">Men's Collection</a>
+        <a href="womens.html">Women's Collection</a>
+      </div>
+      <div class="footer-col">
+        <h4>INFO</h4>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>BRAND</h4>
+        <a href="index.html#manifesto">Manifesto</a>
+        <a href="#">Our Story</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-bottom">
+    <p>2025 PAWNED. All rights reserved.</p>
+    <div class="footer-chess">&#9817; &#9820; &#9819;</div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+  document.getElementById('addToCartBtn').addEventListener('click', function () {
+    window.addToCart('bucket-hat', 'PAWNED Bucket Hat', 150);
+  });
+</script>
+
+<!-- coded by Jesus NK Kanku -->
+</body>
+</html>

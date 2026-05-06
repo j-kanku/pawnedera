@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="PAWNEDORA Women's Collection — She earns her crown." />
+<title>PAWNEDORA | Women's Collection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Bebas+Neue&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- CURSOR -->
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursorFollower"></div>
+
+<!-- NAV -->
+
+<nav class="nav scrolled" id="nav">
+<div class="nav-inner">
+<a href="index.html" class="nav-logo">
+<span class="logo-text">PAWNED</span>
+</a>
+<ul class="nav-links" id="navLinks">
+<li><a href="mens.html" class="nav-link">MEN</a></li>
+<li><a href="womens.html" class="nav-link">WOMEN</a></li>
+<li><a href="index.html#manifesto" class="nav-link">MANIFESTO</a></li>
+</ul>
+<div class="nav-actions">
+<button class="icon-btn" id="cartBtn" aria-label="Cart">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+<line x1="3" y1="6" x2="21" y2="6"/>
+<path d="M16 10a4 4 0 0 1-8 0"/>
+</svg>
+<span class="cart-count" id="cartCount">0</span>
+</button>
+<button class="hamburger" id="hamburger" aria-label="Menu">
+<span></span><span></span><span></span>
+</button>
+</div>
+</div>
+</nav>
+
+<!-- MOBILE MENU -->
+
+<div class="mobile-menu" id="mobileMenu">
+<button class="mobile-close" id="mobileClose">✕</button>
+<ul>
+<li><a href="mens.html" class="mobile-link">MEN</a></li>
+<li><a href="womens.html" class="mobile-link">WOMEN</a></li>
+<li><a href="index.html#manifesto" class="mobile-link">MANIFESTO</a></li>
+</ul>
+<div class="mobile-bottom">
+<p class="chess-quote">"From Pawn to Queen"</p>
+</div>
+</div>
+
+<!-- PAGE HERO -->
+
+<section class="page-hero">
+<p class="page-hero-label">WOMEN'S COLLECTION</p>
+<h1 class="page-hero-title page-hero-title--italic">PAWNEDORA</h1>
+<p class="page-hero-sub">She doesn't wait for a crown — she earns it.</p>
+</section>
+
+<!-- COLLECTION -->
+
+<section class="collection collection--alt" id="womens">
+<div class="filters" id="womensFilters">
+<button class="filter-btn filter-btn--active" data-filter="all">ALL</button>
+<button class="filter-btn" data-filter="accessories">ACCESSORIES</button>
+</div>
+
+<div class="product-grid" id="womensGrid">
+
+```
+<!-- Bucket Hat -->
+<article class="product-card" data-category="accessories" onclick="window.location='bucket-hat.html'">
+<div class="product-img-wrap">
+    <img src="hat.jpg" alt="PAWNED Bucket Hat"
+      onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+<div class="product-placeholder product-placeholder--queen">
+<span class="ph-icon">♛</span>
+<span class="ph-text">Bucket Hat<br/>Black</span>
+</div>
+<div class="product-overlay">
+<button class="quick-add" data-id="hat-womens" data-name="PAWNED Bucket Hat" data-price="150">QUICK ADD</button>
+</div>
+<span class="product-badge">NEW</span>
+</div>
+<div class="product-info">
+<h3 class="product-name">PAWNED Bucket Hat</h3>
+<div class="product-meta">
+<span class="product-price">R150</span>
+<div class="product-swatches">
+<span class="swatch swatch--black active"></span>
+</div>
+</div>
+</div>
+</article>
+```
+
+</div>
+</section>
+
+<!-- CART DRAWER -->
+
+<aside class="cart-drawer" id="cartDrawer">
+<div class="cart-header">
+<h3>YOUR CART</h3>
+<button class="cart-close" id="cartClose">✕</button>
+</div>
+<div class="cart-items" id="cartItems">
+<div class="cart-empty" id="cartEmpty">
+<span>♛</span>
+<p>Your cart is empty.<br/>Make your move.</p>
+</div>
+</div>
+<div class="cart-footer" id="cartFooter" style="display:none">
+<div class="cart-total">
+<span>TOTAL</span>
+<span id="cartTotal">R0</span>
+</div>
+<button class="checkout-btn" id="checkoutBtn">CHECKOUT</button>
+<p class="cart-note">Free shipping on orders over R1 500</p>
+</div>
+</aside>
+<div class="cart-overlay" id="cartOverlay"></div>
+
+<!-- CHECKOUT MODAL -->
+
+<div class="modal-overlay" id="checkoutModal" style="display:none">
+<div class="modal checkout-modal">
+<button class="modal-close" id="checkoutClose">✕</button>
+<h2>CHECKOUT</h2>
+<div class="checkout-steps">
+<div class="checkout-step active" id="step1">
+<h4>01 — CONTACT</h4>
+<input class="form-input" type="email" placeholder="Email address" />
+<input class="form-input" type="text" placeholder="Full name" />
+<input class="form-input" type="tel" placeholder="Phone number" />
+</div>
+<div class="checkout-step" id="step2">
+<h4>02 — DELIVERY</h4>
+<input class="form-input" type="text" placeholder="Street address" />
+<input class="form-input" type="text" placeholder="City" />
+<input class="form-input" type="text" placeholder="Province" />
+<input class="form-input" type="text" placeholder="Postal code" />
+</div>
+<div class="checkout-step" id="step3">
+<h4>03 — PAYMENT</h4>
+<div class="payment-options">
+<label class="payment-option">
+<input type="radio" name="payment" value="card" checked />
+<span>Card Payment</span>
+</label>
+<label class="payment-option">
+<input type="radio" name="payment" value="eft" />
+<span>EFT / Bank Transfer</span>
+</label>
+</div>
+<div class="bank-details" id="bankDetails" style="display:none">
+<p class="bank-title">BANK DETAILS</p>
+<div class="bank-row"><span>Bank</span><span>OM Bank</span></div>
+<div class="bank-row"><span>Account No.</span><span>47979800153</span></div>
+<div class="bank-row"><span>Reference</span><span>Your Order Number</span></div>
+</div>
+</div>
+</div>
+<div class="checkout-nav">
+<button class="checkout-prev" id="prevStep" style="display:none">BACK</button>
+<button class="checkout-next" id="nextStep">CONTINUE</button>
+</div>
+</div>
+</div>
+
+<!-- SUCCESS MODAL -->
+
+<div class="modal-overlay" id="successModal" style="display:none">
+<div class="modal success-modal">
+<div class="success-icon">♛</div>
+<h2>ORDER CONFIRMED</h2>
+<p class="success-msg">Your move has been made. We will have it to you shortly.</p>
+<div class="order-ref">ORDER NUMBER &nbsp;<span id="orderRef">PWN00001</span></div>
+<div class="success-bank">
+<p class="bank-title">PAYMENT DETAILS (IF EFT)</p>
+<div class="bank-row"><span>Bank</span><span>OM Bank</span></div>
+<div class="bank-row"><span>Account No.</span><span>47979800153</span></div>
+<div class="bank-row"><span>Reference</span><span id="successOrderRef">PWN00001</span></div>
+</div>
+<button class="checkout-btn" id="successClose" style="margin-top:2rem">CONTINUE SHOPPING</button>
+</div>
+</div>
+
+<!-- FOOTER -->
+
+<footer class="footer">
+<div class="footer-top">
+<div class="footer-brand">
+<div class="footer-logo">
+<span class="logo-icon">♟</span>
+<span class="logo-text">PAWNED</span>
+</div>
+<p class="footer-tagline">From Pawn to King.<br/>From Pawn to Queen.</p>
+<div class="footer-social-links">
+<a href="#" class="footer-social-link">IG</a>
+<a href="#" class="footer-social-link">TK</a>
+<a href="#" class="footer-social-link">TW</a>
+</div>
+</div>
+<div class="footer-links">
+<div class="footer-col">
+<h4>SHOP</h4>
+<a href="mens.html">Men's Collection</a>
+<a href="womens.html">Women's Collection</a>
+</div>
+<div class="footer-col">
+<h4>INFO</h4>
+<a href="#">Shipping and Returns</a>
+<a href="#">FAQ</a>
+<a href="#">Contact</a>
+</div>
+<div class="footer-col">
+<h4>BRAND</h4>
+<a href="index.html#manifesto">Manifesto</a>
+<a href="#">Our Story</a>
+</div>
+</div>
+</div>
+<div class="footer-divider"></div>
+<div class="footer-bottom">
+<p>2025 PAWNED. All rights reserved.</p>
+<div class="footer-chess">♟ ♜ ♛</div>
+</div>
+</footer>
+
+<script src="main.js"></script>
+
+</body>
+</html>
