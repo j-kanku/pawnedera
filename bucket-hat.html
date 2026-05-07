@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="PAWNED Bucket Hat — R150. One size fits all. One colour. All statement." />
+  <meta name="description" content="PAWNED Bucket Hat — R250. One size fits all. One colour. All statement." />
   <title>PAWNED | Bucket Hat</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -133,15 +133,11 @@
         <h4>03 — PAYMENT</h4>
         <div class="payment-options">
           <label class="payment-option">
-            <input type="radio" name="payment" value="card" checked />
-            <span>Card Payment</span>
-          </label>
-          <label class="payment-option">
-            <input type="radio" name="payment" value="eft" />
+            <input type="radio" name="payment" value="eft" checked />
             <span>EFT / Bank Transfer</span>
           </label>
         </div>
-        <div class="bank-details" id="bankDetails" style="display:none">
+        <div class="bank-details" id="bankDetails">
           <p class="bank-title">BANK DETAILS</p>
           <div class="bank-row"><span>Bank</span><span>OM Bank</span></div>
           <div class="bank-row"><span>Account No.</span><span>47979800153</span></div>
@@ -164,7 +160,7 @@
     <p class="success-msg">Your move has been made. We will have it to you shortly.</p>
     <div class="order-ref">ORDER NUMBER &nbsp;<span id="orderRef">PWN00001</span></div>
     <div class="success-bank">
-      <p class="bank-title">PAYMENT DETAILS (IF EFT)</p>
+      <p class="bank-title">PAYMENT DETAILS (EFT)</p>
       <div class="bank-row"><span>Bank</span><span>OM Bank</span></div>
       <div class="bank-row"><span>Account No.</span><span>47979800153</span></div>
       <div class="bank-row"><span>Reference</span><span id="successOrderRef">PWN00001</span></div>
@@ -214,7 +210,7 @@
 <script src="main.js"></script>
 <script>
   document.getElementById('addToCartBtn').addEventListener('click', function () {
-    window.addToCart('bucket-hat', 'PAWNED Bucket Hat', 150);
+    window.addToCart('bucket-hat', 'PAWNED Bucket Hat', 250);
   });
 </script>
 
