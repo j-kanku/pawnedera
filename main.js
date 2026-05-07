@@ -246,22 +246,24 @@
   /* ── STEP VALIDATION ── */
   function validateStep(step) {
     if (step === 1) {
-      const email = document.querySelector('#step1 input[type="email"]');
-      const name  = document.querySelector('#step1 input[type="text"]');
-      const phone = document.querySelector('#step1 input[type="tel"]');
+      const inputs = document.querySelectorAll('#step1 .form-input');
+      const email  = inputs[0];
+      const name   = inputs[1];
+      const phone  = inputs[2];
       if (!email || !email.value.trim()) { showToast('Please enter your email'); return false; }
       if (!name  || !name.value.trim())  { showToast('Please enter your name');  return false; }
       if (!phone || !phone.value.trim()) { showToast('Please enter your phone'); return false; }
     }
     if (step === 2) {
-      const street   = document.querySelector('#step2 input:nth-child(1)');
-      const city     = document.querySelector('#step2 input:nth-child(2)');
-      const province = document.querySelector('#step2 input:nth-child(3)');
-      const postal   = document.querySelector('#step2 input:nth-child(4)');
-      if (!street   || !street.value.trim())   { showToast('Please enter your street address'); return false; }
-      if (!city     || !city.value.trim())      { showToast('Please enter your city');           return false; }
-      if (!province || !province.value.trim())  { showToast('Please enter your province');       return false; }
-      if (!postal   || !postal.value.trim())    { showToast('Please enter your postal code');    return false; }
+      const inputs   = document.querySelectorAll('#step2 .form-input');
+      const street   = inputs[0];
+      const city     = inputs[1];
+      const province = inputs[2];
+      const postal   = inputs[3];
+      if (!street   || !street.value.trim())  { showToast('Please enter your street address'); return false; }
+      if (!city     || !city.value.trim())     { showToast('Please enter your city');           return false; }
+      if (!province || !province.value.trim()) { showToast('Please enter your province');       return false; }
+      if (!postal   || !postal.value.trim())   { showToast('Please enter your postal code');    return false; }
     }
     return true;
   }
@@ -338,20 +340,18 @@
     const ref = generateOrderRef();
 
     // Collect form data
-    const emailInput    = document.querySelector('#step1 input[type="email"]');
-    const nameInput     = document.querySelector('#step1 input[type="text"]');
-    const phoneInput    = document.querySelector('#step1 input[type="tel"]');
-    const streetInputs  = document.querySelectorAll('#step2 input');
+    const step1Inputs = document.querySelectorAll('#step1 .form-input');
+    const step2Inputs = document.querySelectorAll('#step2 .form-input');
 
     const orderData = {
       orderNumber : ref,
-      name        : nameInput    ? nameInput.value.trim()    : '',
-      email       : emailInput   ? emailInput.value.trim()   : '',
-      phone       : phoneInput   ? phoneInput.value.trim()   : '',
-      address     : streetInputs[0] ? streetInputs[0].value.trim() : '',
-      city        : streetInputs[1] ? streetInputs[1].value.trim() : '',
-      province    : streetInputs[2] ? streetInputs[2].value.trim() : '',
-      postal      : streetInputs[3] ? streetInputs[3].value.trim() : '',
+      email       : step1Inputs[0] ? step1Inputs[0].value.trim() : '',
+      name        : step1Inputs[1] ? step1Inputs[1].value.trim() : '',
+      phone       : step1Inputs[2] ? step1Inputs[2].value.trim() : '',
+      address     : step2Inputs[0] ? step2Inputs[0].value.trim() : '',
+      city        : step2Inputs[1] ? step2Inputs[1].value.trim() : '',
+      province    : step2Inputs[2] ? step2Inputs[2].value.trim() : '',
+      postal      : step2Inputs[3] ? step2Inputs[3].value.trim() : '',
       items       : formatOrderItems(),
       total       : formatPrice(getTotal()),
     };
