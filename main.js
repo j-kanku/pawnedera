@@ -255,15 +255,7 @@
       if (!phone || !phone.value.trim()) { showToast('Please enter your phone'); return false; }
     }
     if (step === 2) {
-      const inputs   = document.querySelectorAll('#step2 .form-input');
-      const street   = inputs[0];
-      const city     = inputs[1];
-      const province = inputs[2];
-      const postal   = inputs[3];
-      if (!street   || !street.value.trim())  { showToast('Please enter your street address'); return false; }
-      if (!city     || !city.value.trim())     { showToast('Please enter your city');           return false; }
-      if (!province || !province.value.trim()) { showToast('Please enter your province');       return false; }
-      if (!postal   || !postal.value.trim())   { showToast('Please enter your postal code');    return false; }
+      // Accept whatever the customer enters
     }
     return true;
   }
