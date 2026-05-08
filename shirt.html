@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PAWNED Acid Wash Tee — R549.99. Every stitch a step." />
+  <title>PAWNED | Acid Wash Tee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Bebas+Neue&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .shirt-gallery {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 0.5rem;
+      aspect-ratio: unset;
+    }
+    .shirt-gallery-main {
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      background: #141414;
+      cursor: zoom-in;
+    }
+    .shirt-gallery-main img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .shirt-gallery-main:hover img { transform: scale(1.04); }
+    .shirt-gallery-thumbs {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .shirt-gallery-thumb {
+      flex: 1;
+      overflow: hidden;
+      background: #141414;
+      cursor: pointer;
+    }
+    .shirt-gallery-thumb img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: brightness(0.7);
+      transition: filter 0.3s ease, transform 0.3s ease;
+    }
+    .shirt-gallery-thumb:hover img,
+    .shirt-gallery-thumb.active img {
+      filter: brightness(1);
+      transform: scale(1.05);
+    }
+    .size-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.4rem;
+      margin-bottom: 1.5rem;
+    }
+    .size-btn {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: #888880;
+      border: 1px solid #333330;
+      padding: 0.6rem 0;
+      text-align: center;
+      cursor: pointer;
+      background: transparent;
+      transition: all 0.25s ease;
+    }
+    .size-btn:hover { border-color: #c9a84c; color: #c9a84c; }
+    .size-btn.selected { background: #c9a84c; border-color: #c9a84c; color: #050505; }
+    .detail-specs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      border-top: 1px solid #333330;
+      padding-top: 1.25rem;
+      margin-top: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .detail-spec {
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      color: #888880;
+    }
+    .detail-spec strong {
+      display: block;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: #c9a84c;
+      margin-bottom: 0.2rem;
+    }
+
+    @media (max-width: 600px) {
+      .shirt-gallery { grid-template-columns: 1fr; }
+      .shirt-gallery-thumbs { flex-direction: row; height: 100px; }
+      .size-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav scrolled" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="logo-text">PAWNED</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="mens.html" class="nav-link">MEN</a></li>
+      <li><a href="womens.html" class="nav-link">WOMEN</a></li>
+      <li><a href="index.html#manifesto" class="nav-link">MANIFESTO</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="icon-btn" id="cartBtn" aria-label="Cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">&#10005;</button>
+  <ul>
+    <li><a href="mens.html" class="mobile-link">MEN</a></li>
+    <li><a href="womens.html" class="mobile-link">WOMEN</a></li>
+    <li><a href="index.html#manifesto" class="mobile-link">MANIFESTO</a></li>
+  </ul>
+  <div class="mobile-bottom"><p class="chess-quote">"From Pawn to King"</p></div>
+</div>
+
+<!-- PRODUCT DETAIL -->
+<div class="product-detail">
+
+  <!-- Image gallery -->
+  <div class="product-detail-img shirt-gallery">
+    <div class="shirt-gallery-main" id="mainImg">
+      <img src="shirt.jpeg" alt="PAWNED Acid Wash Tee Front"
+        onerror="this.style.display='none'" id="mainImgEl" />
+    </div>
+    <div class="shirt-gallery-thumbs">
+      <div class="shirt-gallery-thumb active" data-src="shirt.jpeg">
+        <img src="shirt.jpeg" alt="Front view" onerror="this.style.display='none'" />
+      </div>
+      <div class="shirt-gallery-thumb" data-src="shirt-details.jpeg">
+        <img src="shirt-details.jpeg" alt="Detail view" onerror="this.style.display='none'" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Info -->
+  <div class="product-detail-info">
+    <p class="product-detail-eyebrow">TEES &nbsp;&#9817;&nbsp; DROP 01</p>
+    <h1 class="product-detail-name">PAWNED<br/>Acid Wash Tee</h1>
+    <p class="product-detail-price">R549.99</p>
+
+    <p class="product-detail-desc">
+      The signature piece. Heavyweight acid-washed cotton in jet black with embroidered chess pawn on the chest, PAWNED lettering running vertically down the back, and the iconic checkerboard patch at the hem. Oversized cut — worn like armour.
+    </p>
+
+    <!-- Size selector -->
+    <p style="font-size:0.6rem;letter-spacing:0.2em;color:#c9a84c;margin-bottom:0.75rem;">SELECT SIZE</p>
+    <div class="size-grid" id="sizeGrid">
+      <button class="size-btn" data-size="XS">XS</button>
+      <button class="size-btn" data-size="S">S</button>
+      <button class="size-btn" data-size="M">M</button>
+      <button class="size-btn selected" data-size="L">L</button>
+      <button class="size-btn" data-size="XL">XL</button>
+    </div>
+
+    <!-- Specs -->
+    <div class="detail-specs">
+      <div class="detail-spec"><strong>COLOUR</strong>Washed Black</div>
+      <div class="detail-spec"><strong>FIT</strong>Oversized</div>
+      <div class="detail-spec"><strong>MATERIAL</strong>100% Heavyweight Cotton</div>
+      <div class="detail-spec"><strong>FINISH</strong>Acid Wash</div>
+      <div class="detail-spec"><strong>FRONT</strong>Embroidered Pawn</div>
+      <div class="detail-spec"><strong>BACK</strong>Vertical PAWNED</div>
+      <div class="detail-spec"><strong>HEM</strong>Checkerboard Patch</div>
+      <div class="detail-spec"><strong>CARE</strong>Cold wash, hang dry</div>
+    </div>
+
+    <button class="add-to-cart-btn" id="addToCartBtn">ADD TO CART</button>
+
+    <div style="border-top:1px solid #333330;padding-top:1.25rem;margin-top:0.5rem;">
+      <p style="font-size:0.7rem;color:#888880;letter-spacing:0.1em;line-height:1.7;">
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- CART DRAWER -->
+<aside class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h3>YOUR CART</h3>
+    <button class="cart-close" id="cartClose">&#10005;</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">
+      <span>&#9817;</span>
+      <p>Your cart is empty.<br/>Make your move.</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total">
+      <span>TOTAL</span>
+      <span id="cartTotal">R0</span>
+    </div>
+    <button class="checkout-btn" id="checkoutBtn">CHECKOUT</button>
+  </div>
+</aside>
+<div class="cart-overlay" id="cartOverlay"></div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="checkoutModal" style="display:none">
+  <div class="modal checkout-modal">
+    <button class="modal-close" id="checkoutClose">&#10005;</button>
+    <h2>CHECKOUT</h2>
+    <div class="checkout-steps">
+      <div class="checkout-step active" id="step1">
+        <h4>01 — CONTACT</h4>
+        <input class="form-input" type="email" placeholder="Email address" />
+        <input class="form-input" type="text" placeholder="Full name" />
+        <input class="form-input" type="tel" placeholder="Phone number" />
+      </div>
+      <div class="checkout-step" id="step2">
+        <h4>02 — DELIVERY</h4>
+        <input class="form-input" type="text" placeholder="Street address" />
+        <input class="form-input" type="text" placeholder="City" />
+        <input class="form-input" type="text" placeholder="Province" />
+        <input class="form-input" type="text" placeholder="Postal code" />
+      </div>
+      <div class="checkout-step" id="step3">
+        <h4>03 — PAYMENT</h4>
+        <div class="payment-options">
+          <label class="payment-option">
+            <input type="radio" name="payment" value="eft" checked />
+            <span>EFT / Bank Transfer</span>
+          </label>
+        </div>
+        <div class="bank-details" id="bankDetails">
+          <p class="bank-title">BANK DETAILS</p>
+          <div class="bank-row"><span>Bank</span><span>OM Bank</span></div>
+          <div class="bank-row"><span>Account No.</span><span>47979800153</span></div>
+          <div class="bank-row"><span>Reference</span><span>Your Order Number</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="checkout-nav">
+      <button class="checkout-prev" id="prevStep" style="display:none">BACK</button>
+      <button class="checkout-next" id="nextStep">CONTINUE</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal" style="display:none">
+  <div class="modal success-modal">
+    <div class="success-icon">&#9817;</div>
+    <h2>ORDER CONFIRMED</h2>
+    <p class="success-msg">Your move has been made. We will have it to you shortly.</p>
+    <div class="order-ref">ORDER NUMBER &nbsp;<span id="orderRef">PWN00001</span></div>
+    <div class="success-bank">
+      <p class="bank-title">PAYMENT DETAILS (EFT)</p>
+      <div class="bank-row"><span>Bank</span><span>OM Bank</span></div>
+      <div class="bank-row"><span>Account No.</span><span>47979800153</span></div>
+      <div class="bank-row"><span>Reference</span><span id="successOrderRef">PWN00001</span></div>
+    </div>
+    <button class="checkout-btn" id="successClose" style="margin-top:2rem">CONTINUE SHOPPING</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <span class="logo-icon">&#9817;</span>
+        <span class="logo-text">PAWNED</span>
+      </div>
+      <p class="footer-tagline">From Pawn to King.<br/>From Pawn to Queen.</p>
+      <div class="footer-social-links">
+        <a href="https://www.instagram.com/pawnedera?igsh=MWlwdnhzOWdtYW8xeA==" target="_blank" rel="noopener" class="footer-social-link">IG</a>
+        <a href="https://www.tiktok.com/@pawnedera?_r=1&_t=ZS-966a8vFQWyA" target="_blank" rel="noopener" class="footer-social-link">TK</a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>SHOP</h4>
+        <a href="mens.html">Men's Collection</a>
+        <a href="womens.html">Women's Collection</a>
+      </div>
+      <div class="footer-col">
+        <h4>INFO</h4>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>BRAND</h4>
+        <a href="index.html#manifesto">Manifesto</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-bottom">
+    <p>2025 PAWNED. All rights reserved.</p>
+    <div class="footer-chess">&#9817; &#9820; &#9819;</div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+  // Size selector
+  var selectedSize = 'L';
+  document.querySelectorAll('.size-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.size-btn').forEach(function(b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      selectedSize = btn.dataset.size;
+    });
+  });
+
+  // Add to cart with size
+  document.getElementById('addToCartBtn').addEventListener('click', function () {
+    window.addToCart('acid-wash-tee-' + selectedSize, 'PAWNED Acid Wash Tee (' + selectedSize + ')', 549.99);
+  });
+
+  // Thumb switcher
+  document.querySelectorAll('.shirt-gallery-thumb').forEach(function(thumb) {
+    thumb.addEventListener('click', function() {
+      document.querySelectorAll('.shirt-gallery-thumb').forEach(function(t) { t.classList.remove('active'); });
+      thumb.classList.add('active');
+      var src = thumb.dataset.src;
+      document.getElementById('mainImgEl').src = src;
+    });
+  });
+</script>
+<!-- coded by Jesus NK Kanku -->
+</body>
+</html>
