@@ -9,16 +9,14 @@
   /* ── EMAILJS CONFIG ── */
   const EMAILJS_PUBLIC_KEY   = 'rN5d01lajNY4AbV8u';
   const EMAILJS_SERVICE_ID   = 'service_svs3fs5';
-  const EMAILJS_TEMPLATE_ID  = 'template_6dmry46';   // owner notification
+  const EMAILJS_TEMPLATE_ID  = 'template_6dmry46';
   const OWNER_EMAIL          = 'lesegokatugga3@gmail.com';
 
   /* ── LOAD EMAILJS SDK ── */
   (function loadEmailJS() {
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
-    script.onload = function () {
-      emailjs.init(EMAILJS_PUBLIC_KEY);
-    };
+    script.onload = function () { emailjs.init(EMAILJS_PUBLIC_KEY); };
     document.head.appendChild(script);
   })();
 
@@ -32,22 +30,17 @@
 
   /* ── MOBILE MENU ── */
   function setupMobileMenu() {
-    const hamburger  = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobileMenu');
+    const hamburger   = document.getElementById('hamburger');
+    const mobileMenu  = document.getElementById('mobileMenu');
     const mobileClose = document.getElementById('mobileClose');
     const mobileLinks = document.querySelectorAll('.mobile-link');
 
-    function openMenu() {
-      if (mobileMenu) { mobileMenu.classList.add('open'); document.body.style.overflow = 'hidden'; }
-    }
-    function closeMenu() {
-      if (mobileMenu) { mobileMenu.classList.remove('open'); document.body.style.overflow = ''; }
-    }
+    function openMenu()  { if (mobileMenu) { mobileMenu.classList.add('open'); document.body.style.overflow = 'hidden'; } }
+    function closeMenu() { if (mobileMenu) { mobileMenu.classList.remove('open'); document.body.style.overflow = ''; } }
 
     if (hamburger)   hamburger.addEventListener('click',  function (e) { e.stopPropagation(); openMenu(); });
     if (mobileClose) mobileClose.addEventListener('click', function (e) { e.stopPropagation(); closeMenu(); });
     mobileLinks.forEach(link => link.addEventListener('click', closeMenu));
-
     document.addEventListener('click', function (e) {
       if (mobileMenu && mobileMenu.classList.contains('open')) {
         if (!mobileMenu.contains(e.target) && e.target !== hamburger) closeMenu();
@@ -89,8 +82,8 @@
 
   const cartBtn   = document.getElementById('cartBtn');
   const cartClose = document.getElementById('cartClose');
-  if (cartBtn)    cartBtn.addEventListener('click', function (e) { e.stopPropagation(); openCart(); });
-  if (cartClose)  cartClose.addEventListener('click', closeCart);
+  if (cartBtn)     cartBtn.addEventListener('click', function (e) { e.stopPropagation(); openCart(); });
+  if (cartClose)   cartClose.addEventListener('click', closeCart);
   if (cartOverlay) cartOverlay.addEventListener('click', closeCart);
 
   function updateCartCount() {
@@ -114,7 +107,7 @@
       const div = document.createElement('div');
       div.className = 'cart-item';
       div.innerHTML =
-        '<div class="cart-item-img"><img src="hat.jpeg" alt="' + item.name + '" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML=\'&#9817;\'" /></div>' +
+        '<div class="cart-item-img"><img src="shirt.jpeg" alt="' + item.name + '" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML=\'&#9817;\'" /></div>' +
         '<div class="cart-item-details">' +
           '<p class="cart-item-name">' + item.name + '</p>' +
           '<p class="cart-item-price">' + formatPrice(item.price) + '</p>' +
@@ -243,20 +236,21 @@
     });
   }
 
-  /* ── STEP VALIDATION ── */
+  /* ── STEP VALIDATION — require at least 1 character in each field ── */
   function validateStep(step) {
     if (step === 1) {
       const inputs = document.querySelectorAll('#step1 .form-input');
-      const email  = inputs[0];
-      const name   = inputs[1];
-      const phone  = inputs[2];
-      if (!email || !email.value.trim()) { showToast('Please enter your email'); return false; }
-      if (!name  || !name.value.trim())  { showToast('Please enter your name');  return false; }
-      if (!phone || !phone.value.trim()) { showToast('Please enter your phone'); return false; }
+      for (let i = 0; i < inputs.length; i++) {
+        if (!inputs[i].value || inputs[i].value.trim().length < 1) {
+          // Highlight the empty field subtly instead of a blocking toast
+          inputs[i].style.borderColor = '#c9a84c';
+          inputs[i].focus();
+          setTimeout(function() { inputs[i].style.borderColor = ''; }, 1500);
+          return false;
+        }
+      }
     }
-    if (step === 2) {
-      // Accept whatever the customer enters
-    }
+    // Steps 2 and 3 — accept whatever the user enters, no validation
     return true;
   }
 
@@ -287,18 +281,13 @@
     return 'PWN' + Date.now().toString().slice(-5);
   }
 
-  /* ── FORMAT ORDER ITEMS FOR EMAIL ── */
   function formatOrderItems() {
     return cart.map(function (item) {
       return item.qty + 'x ' + item.name + ' — ' + formatPrice(item.price * item.qty);
     }).join('\n');
   }
 
-  /* ── SEND EMAILS VIA EMAILJS ── */
   function sendEmails(orderData) {
-    // Single template handles both emails via EmailJS "To" field logic
-    // We send twice: once to customer, once to owner
-
     const baseParams = {
       order_number     : orderData.orderNumber,
       order_items      : orderData.items,
@@ -311,27 +300,19 @@
       customer_province: orderData.province,
       customer_postal  : orderData.postal,
     };
-
-    // Email to OWNER
     emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, Object.assign({}, baseParams, {
-      to_email : OWNER_EMAIL,
-      to_name  : 'PAWNED',
-      email_type: 'owner'
+      to_email: OWNER_EMAIL, to_name: 'PAWNED', email_type: 'owner'
     })).catch(function (err) { console.error('Owner email failed:', err); });
 
-    // Email to CUSTOMER
-    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, Object.assign({}, baseParams, {
-      to_email : orderData.email,
-      to_name  : orderData.name,
-      email_type: 'customer'
-    })).catch(function (err) { console.error('Customer email failed:', err); });
+    if (orderData.email && orderData.email.length > 3) {
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, Object.assign({}, baseParams, {
+        to_email: orderData.email, to_name: orderData.name, email_type: 'customer'
+      })).catch(function (err) { console.error('Customer email failed:', err); });
+    }
   }
 
-  /* ── PLACE ORDER ── */
   function placeOrder() {
     const ref = generateOrderRef();
-
-    // Collect form data
     const step1Inputs = document.querySelectorAll('#step1 .form-input');
     const step2Inputs = document.querySelectorAll('#step2 .form-input');
 
@@ -348,20 +329,12 @@
       total       : formatPrice(getTotal()),
     };
 
-    // Disable button to prevent double submit
-    if (nextStepBtn) {
-      nextStepBtn.disabled     = true;
-      nextStepBtn.textContent  = 'SENDING...';
-    }
-
-    // Send emails
+    if (nextStepBtn) { nextStepBtn.disabled = true; nextStepBtn.textContent = 'SENDING...'; }
     sendEmails(orderData);
 
-    // Update order number displays
     if (orderRef)        orderRef.textContent        = ref;
     if (successOrderRef) successOrderRef.textContent = ref;
 
-    // Show success, clear cart
     if (checkoutModal) checkoutModal.style.display = 'none';
     if (successModal)  successModal.style.display  = 'flex';
 
@@ -369,11 +342,7 @@
     saveCart();
     updateCartCount();
 
-    // Re-enable button
-    if (nextStepBtn) {
-      nextStepBtn.disabled    = false;
-      nextStepBtn.textContent = 'PLACE ORDER';
-    }
+    if (nextStepBtn) { nextStepBtn.disabled = false; nextStepBtn.textContent = 'PLACE ORDER'; }
   }
 
   if (successClose) {
@@ -392,7 +361,6 @@
     '.manifesto-heading, .manifesto-body, .collection-header, .product-card, .brand-strip-inner, .page-hero, .product-detail, .gallery-item'
   );
   reveals.forEach(el => el.classList.add('reveal'));
-
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver(function (entries) {
       entries.forEach(entry => {
