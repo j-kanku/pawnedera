@@ -71,27 +71,6 @@
     }
     .size-btn:hover { border-color: #c9a84c; color: #c9a84c; }
     .size-btn.selected { background: #c9a84c; border-color: #c9a84c; color: #050505; }
-    .detail-specs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.75rem;
-      border-top: 1px solid #333330;
-      padding-top: 1.25rem;
-      margin-top: 1.25rem;
-      margin-bottom: 1.5rem;
-    }
-    .detail-spec {
-      font-size: 0.68rem;
-      letter-spacing: 0.08em;
-      color: #888880;
-    }
-    .detail-spec strong {
-      display: block;
-      font-size: 0.6rem;
-      letter-spacing: 0.15em;
-      color: #c9a84c;
-      margin-bottom: 0.2rem;
-    }
 
     @media (max-width: 600px) {
       .shirt-gallery { grid-template-columns: 1fr; }
@@ -144,15 +123,14 @@
   <!-- Image gallery -->
   <div class="product-detail-img shirt-gallery">
     <div class="shirt-gallery-main" id="mainImg">
-      <img src="shirt.jpeg" alt="PAWNED Acid Wash Tee Front"
-        onerror="this.style.display='none'" id="mainImgEl" />
+      <img src="shirt.jpeg" alt="PAWNED Acid Wash Tee Front" id="mainImgEl" />
     </div>
     <div class="shirt-gallery-thumbs">
       <div class="shirt-gallery-thumb active" data-src="shirt.jpeg">
-        <img src="shirt.jpeg" alt="Front view" onerror="this.style.display='none'" />
+        <img src="shirt.jpeg" alt="Front view" />
       </div>
       <div class="shirt-gallery-thumb" data-src="shirt-details.jpeg">
-        <img src="shirt-details.jpeg" alt="Detail view" onerror="this.style.display='none'" />
+        <img src="shirt-details.jpeg" alt="Detail view" />
       </div>
     </div>
   </div>
@@ -168,7 +146,7 @@
     </p>
 
     <!-- Size selector -->
-    <p style="font-size:0.6rem;letter-spacing:0.2em;color:#c9a84c;margin-bottom:0.75rem;">SELECT SIZE</p>
+    <p style="font-size:0.6rem;letter-spacing:0.2em;color:#c9a84c;margin-bottom:0.75rem;margin-top:1.5rem;">SELECT SIZE</p>
     <div class="size-grid" id="sizeGrid">
       <button class="size-btn" data-size="XS">XS</button>
       <button class="size-btn" data-size="S">S</button>
@@ -177,22 +155,11 @@
       <button class="size-btn" data-size="XL">XL</button>
     </div>
 
-    <!-- Specs -->
-    <div class="detail-specs">
-      <div class="detail-spec"><strong>COLOUR</strong>Washed Black</div>
-      <div class="detail-spec"><strong>FIT</strong>Oversized</div>
-      <div class="detail-spec"><strong>MATERIAL</strong>100% Heavyweight Cotton</div>
-      <div class="detail-spec"><strong>FINISH</strong>Acid Wash</div>
-      <div class="detail-spec"><strong>FRONT</strong>Embroidered Pawn</div>
-      <div class="detail-spec"><strong>BACK</strong>Vertical PAWNED</div>
-      <div class="detail-spec"><strong>HEM</strong>Checkerboard Patch</div>
-      <div class="detail-spec"><strong>CARE</strong>Cold wash, hang dry</div>
-    </div>
-
     <button class="add-to-cart-btn" id="addToCartBtn">ADD TO CART</button>
 
-    <div style="border-top:1px solid #333330;padding-top:1.25rem;margin-top:0.5rem;">
+    <div style="border-top:1px solid #333330;padding-top:1.25rem;margin-top:1rem;">
       <p style="font-size:0.7rem;color:#888880;letter-spacing:0.1em;line-height:1.7;">
+        EFT payments accepted — bank details provided at checkout.
       </p>
     </div>
   </div>
@@ -328,7 +295,7 @@
     });
   });
 
-  // Add to cart with size
+  // Add to cart — size is embedded in the product name so the order email includes it
   document.getElementById('addToCartBtn').addEventListener('click', function () {
     window.addToCart('acid-wash-tee-' + selectedSize, 'PAWNED Acid Wash Tee (' + selectedSize + ')', 549.99);
   });
@@ -338,8 +305,7 @@
     thumb.addEventListener('click', function() {
       document.querySelectorAll('.shirt-gallery-thumb').forEach(function(t) { t.classList.remove('active'); });
       thumb.classList.add('active');
-      var src = thumb.dataset.src;
-      document.getElementById('mainImgEl').src = src;
+      document.getElementById('mainImgEl').src = thumb.dataset.src;
     });
   });
 </script>
