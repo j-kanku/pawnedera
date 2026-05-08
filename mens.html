@@ -10,199 +10,87 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Bebas+Neue&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <style>
-    /* ── CAROUSEL HERO ── */
     .carousel-hero {
-      position: relative;
-      height: 100vh;
-      min-height: 600px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: relative; height: 100vh; min-height: 600px;
+      overflow: hidden; display: flex; align-items: center; justify-content: center;
     }
-
     .carousel-track {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      width: max-content;
-      animation: carouselScroll 32s linear infinite;
+      position: absolute; inset: 0; display: flex; width: max-content;
+      animation: carouselScroll 48s linear infinite;
     }
     .carousel-track:hover { animation-play-state: paused; }
-
     @keyframes carouselScroll {
       0%   { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
-
     .carousel-slide {
-      flex-shrink: 0;
-      width: 38vw;
-      max-width: 520px;
-      min-width: 260px;
-      height: 100vh;
-      position: relative;
-      overflow: hidden;
+      flex-shrink: 0; width: 38vw; max-width: 520px; min-width: 260px;
+      height: 100vh; position: relative; overflow: hidden;
     }
     .carousel-slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
-      filter: brightness(0.55) saturate(0.7);
-      transition: filter 0.6s ease;
+      width: 100%; height: 100%; object-fit: cover; object-position: center top;
+      filter: brightness(0.55) saturate(0.7); transition: filter 0.6s ease;
     }
-    .carousel-slide:hover img {
-      filter: brightness(0.7) saturate(0.9);
-    }
-
-    /* vertical gold separators between slides */
+    .carousel-slide:hover img { filter: brightness(0.7) saturate(0.9); }
     .carousel-slide::after {
-      content: '';
-      position: absolute;
-      top: 0; right: 0;
-      width: 1px; height: 100%;
+      content: ''; position: absolute; top: 0; right: 0; width: 1px; height: 100%;
       background: linear-gradient(to bottom, transparent, rgba(201,168,76,0.4), transparent);
     }
-
-    /* Overlay gradient left + right fade */
-    .carousel-hero::before,
-    .carousel-hero::after {
-      content: '';
-      position: absolute;
-      top: 0; bottom: 0;
-      width: 20%;
-      z-index: 2;
-      pointer-events: none;
+    .carousel-hero::before, .carousel-hero::after {
+      content: ''; position: absolute; top: 0; bottom: 0; width: 20%; z-index: 2; pointer-events: none;
     }
-    .carousel-hero::before {
-      left: 0;
-      background: linear-gradient(to right, #050505 0%, transparent 100%);
-    }
-    .carousel-hero::after {
-      right: 0;
-      background: linear-gradient(to left, #050505 0%, transparent 100%);
-    }
-
-    /* Hero text centred over carousel */
-    .carousel-content {
-      position: absolute;
-      z-index: 10;
-      text-align: center;
-      padding: 2rem;
-      pointer-events: none;
-    }
+    .carousel-hero::before { left: 0; background: linear-gradient(to right, #050505 0%, transparent 100%); }
+    .carousel-hero::after  { right: 0; background: linear-gradient(to left,  #050505 0%, transparent 100%); }
+    .carousel-content { position: absolute; z-index: 10; text-align: center; padding: 2rem; pointer-events: none; }
     .carousel-eyebrow {
-      font-size: 0.65rem;
-      font-weight: 500;
-      letter-spacing: 0.3em;
-      color: #c9a84c;
-      margin-bottom: 1rem;
-      opacity: 0;
-      animation: fadeUpIn 1s 0.4s forwards;
+      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.3em; color: #c9a84c;
+      margin-bottom: 1rem; opacity: 0; animation: fadeUpIn 1s 0.4s forwards;
     }
     .carousel-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(5rem, 14vw, 11rem);
-      letter-spacing: 0.06em;
-      line-height: 0.9;
-      color: #f5f5f0;
-      text-shadow: 0 4px 60px rgba(0,0,0,0.8);
-      opacity: 0;
-      animation: fadeUpIn 1s 0.7s forwards;
+      font-family: 'Bebas Neue', sans-serif; font-size: clamp(5rem, 14vw, 11rem);
+      letter-spacing: 0.06em; line-height: 0.9; color: #f5f5f0;
+      text-shadow: 0 4px 60px rgba(0,0,0,0.8); opacity: 0; animation: fadeUpIn 1s 0.7s forwards;
     }
     .carousel-sub {
-      font-size: 0.62rem;
-      font-weight: 500;
-      letter-spacing: 0.35em;
-      color: rgba(245,245,240,0.55);
-      margin-top: 0.75rem;
-      opacity: 0;
-      animation: fadeUpIn 1s 1s forwards;
+      font-size: 0.62rem; font-weight: 500; letter-spacing: 0.35em;
+      color: rgba(245,245,240,0.55); margin-top: 0.75rem; opacity: 0; animation: fadeUpIn 1s 1s forwards;
     }
     .carousel-badge {
-      display: inline-block;
-      margin-top: 1.5rem;
-      font-size: 0.6rem;
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      color: #050505;
-      background: #c9a84c;
-      padding: 0.65rem 1.75rem;
-      pointer-events: auto;
-      cursor: pointer;
-      opacity: 0;
-      animation: fadeUpIn 1s 1.2s forwards;
+      display: inline-block; margin-top: 1.5rem; font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 0.22em; color: #050505; background: #c9a84c; padding: 0.65rem 1.75rem;
+      pointer-events: auto; cursor: pointer; opacity: 0; animation: fadeUpIn 1s 1.2s forwards;
       transition: background 0.3s ease;
     }
     .carousel-badge:hover { background: #e8c878; }
-
-    /* Decorative chess piece watermark */
     .carousel-watermark {
-      position: absolute;
-      z-index: 3;
-      font-size: clamp(12rem, 30vw, 24rem);
-      color: rgba(201,168,76,0.04);
-      line-height: 1;
-      pointer-events: none;
-      user-select: none;
-      bottom: -2rem;
-      right: 5%;
-      animation: floatWm 8s ease-in-out infinite;
+      position: absolute; z-index: 3; font-size: clamp(12rem, 30vw, 24rem);
+      color: rgba(201,168,76,0.04); line-height: 1; pointer-events: none; user-select: none;
+      bottom: -2rem; right: 5%; animation: floatWm 8s ease-in-out infinite;
     }
     @keyframes floatWm {
       0%, 100% { transform: translateY(0) rotate(-3deg); }
-      50% { transform: translateY(-20px) rotate(3deg); }
+      50%       { transform: translateY(-20px) rotate(3deg); }
     }
-
     @keyframes fadeUpIn {
       from { opacity: 0; transform: translateY(28px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-
-    /* Scroll indicator */
     .carousel-scroll {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.5rem;
-      letter-spacing: 0.35em;
-      color: rgba(201,168,76,0.5);
-      pointer-events: none;
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); z-index: 10;
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      font-size: 0.5rem; letter-spacing: 0.35em; color: rgba(201,168,76,0.5); pointer-events: none;
     }
     .carousel-scroll-line {
-      width: 1px; height: 36px;
-      background: linear-gradient(to bottom, #c9a84c, transparent);
+      width: 1px; height: 36px; background: linear-gradient(to bottom, #c9a84c, transparent);
       animation: pulseDown 2s ease-in-out infinite;
     }
     @keyframes pulseDown {
       0%, 100% { opacity: 0.3; transform: scaleY(1); }
-      50% { opacity: 1; transform: scaleY(1.15); }
+      50%       { opacity: 1; transform: scaleY(1.15); }
     }
-
     @media (max-width: 600px) {
       .carousel-slide { width: 70vw; }
       .carousel-title  { font-size: clamp(4rem, 20vw, 7rem); }
-    }
-
-    /* ── T-SHIRT DETAIL PAGE LINK ── */
-    .shirt-banner {
-      background: linear-gradient(135deg, #0d0d0d 0%, #141414 100%);
-      border-top: 1px solid rgba(201,168,76,0.12);
-      border-bottom: 1px solid rgba(201,168,76,0.12);
-      padding: 1.5rem 2rem;
-      text-align: center;
-    }
-    .shirt-banner p {
-      font-size: 0.6rem;
-      letter-spacing: 0.25em;
-      color: rgba(201,168,76,0.7);
     }
   </style>
 </head>
@@ -244,29 +132,44 @@
   <div class="mobile-bottom"><p class="chess-quote">"From Pawn to King"</p></div>
 </div>
 
-<!-- CAROUSEL HERO -->
+<!-- CAROUSEL HERO — all 15 WhatsApp images, duplicated for seamless loop -->
 <section class="carousel-hero" id="hero">
-  <!-- Infinite carousel track — images duplicated for seamless loop -->
-  <div class="carousel-track" id="carouselTrack">
-    <div class="carousel-slide"><img src="back1.jpeg" alt="PAWNED Mens" /></div>
-    <div class="carousel-slide"><img src="gallery1.jpg" alt="PAWNED Crew" /></div>
-    <div class="carousel-slide"><img src="gallery2.jpg" alt="PAWNED Circle" /></div>
-    <div class="carousel-slide"><img src="gallery4.jpg" alt="PAWNED Pool" /></div>
-    <div class="carousel-slide"><img src="gallery5.jpg" alt="PAWNED Wall" /></div>
-    <div class="carousel-slide"><img src="shirt.jpeg" alt="PAWNED Shirt" /></div>
+  <div class="carousel-track">
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.43.jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.44 (1).jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.44 (2).jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.44.jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.45 (1).jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.45 (2).jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.45.jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.46 (1).jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.46 (2).jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.46.jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.47 (1).jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.47 (2).jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.47 (3).jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.47.jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.48.jpeg" alt="PAWNED" /></div>
     <!-- duplicate for seamless loop -->
-    <div class="carousel-slide"><img src="back1.jpeg" alt="PAWNED Mens" /></div>
-    <div class="carousel-slide"><img src="gallery1.jpg" alt="PAWNED Crew" /></div>
-    <div class="carousel-slide"><img src="gallery2.jpg" alt="PAWNED Circle" /></div>
-    <div class="carousel-slide"><img src="gallery4.jpg" alt="PAWNED Pool" /></div>
-    <div class="carousel-slide"><img src="gallery5.jpg" alt="PAWNED Wall" /></div>
-    <div class="carousel-slide"><img src="shirt.jpeg" alt="PAWNED Shirt" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.43.jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.44 (1).jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.44 (2).jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.44.jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.45 (1).jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.45 (2).jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.45.jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.46 (1).jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.46 (2).jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.46.jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.47 (1).jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.47 (2).jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.47 (3).jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.47.jpeg" alt="PAWNED" /></div>
+    <div class="carousel-slide"><img src="WhatsApp Image 2026-05-08 at 10.35.48.jpeg" alt="PAWNED" /></div>
   </div>
 
-  <!-- Chess piece watermark -->
   <div class="carousel-watermark">&#9817;</div>
 
-  <!-- Centred hero text -->
   <div class="carousel-content">
     <p class="carousel-eyebrow">MEN'S COLLECTION</p>
     <h1 class="carousel-title">PAWNED</h1>
@@ -274,7 +177,6 @@
     <a href="#collections" class="carousel-badge">SHOP THE DROP</a>
   </div>
 
-  <!-- Scroll hint -->
   <div class="carousel-scroll">
     <span>SCROLL</span>
     <div class="carousel-scroll-line"></div>
@@ -284,22 +186,14 @@
 <!-- TICKER -->
 <div class="ticker-wrap">
   <div class="ticker">
-    <span>FROM PAWN TO KING</span>
-    <span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
-    <span>LUXURY STREETWEAR</span>
-    <span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
-    <span>EARNED SUCCESS</span>
-    <span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
-    <span>RESILIENCE AND AMBITION</span>
-    <span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
-    <span>FROM PAWN TO KING</span>
-    <span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
-    <span>LUXURY STREETWEAR</span>
-    <span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
-    <span>EARNED SUCCESS</span>
-    <span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
-    <span>RESILIENCE AND AMBITION</span>
-    <span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
+    <span>FROM PAWN TO KING</span><span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
+    <span>LUXURY STREETWEAR</span><span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
+    <span>EARNED SUCCESS</span><span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
+    <span>RESILIENCE AND AMBITION</span><span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
+    <span>FROM PAWN TO KING</span><span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
+    <span>LUXURY STREETWEAR</span><span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
+    <span>EARNED SUCCESS</span><span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
+    <span>RESILIENCE AND AMBITION</span><span class="ticker-sep">&nbsp;&nbsp;&#9817;&nbsp;&nbsp;</span>
   </div>
 </div>
 
@@ -310,17 +204,12 @@
     <button class="filter-btn" data-filter="tees">TEES</button>
     <button class="filter-btn" data-filter="accessories">ACCESSORIES</button>
   </div>
-
   <div class="product-grid" id="mensGrid">
-
-    <!-- PAWNED T-Shirt -->
     <article class="product-card" data-category="tees" onclick="window.location='shirt.html'">
       <div class="product-img-wrap">
-        <img src="shirt.jpeg" alt="PAWNED Acid Wash Tee"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <img src="shirt.jpeg" alt="PAWNED Acid Wash Tee" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
         <div class="product-placeholder" style="display:none">
-          <span class="ph-icon">&#9817;</span>
-          <span class="ph-text">Acid Wash Tee<br/>Black</span>
+          <span class="ph-icon">&#9817;</span><span class="ph-text">Acid Wash Tee<br/>Black</span>
         </div>
         <div class="product-overlay">
           <button class="quick-add" data-id="shirt-mens" data-name="PAWNED Acid Wash Tee" data-price="549.99">QUICK ADD</button>
@@ -331,21 +220,15 @@
         <h3 class="product-name">PAWNED Acid Wash Tee</h3>
         <div class="product-meta">
           <span class="product-price">R549.99</span>
-          <div class="product-swatches">
-            <span class="swatch swatch--black active"></span>
-          </div>
+          <div class="product-swatches"><span class="swatch swatch--black active"></span></div>
         </div>
       </div>
     </article>
-
-    <!-- Bucket Hat -->
     <article class="product-card" data-category="accessories" onclick="window.location='bucket-hat.html'">
       <div class="product-img-wrap">
-        <img src="hat.jpeg" alt="PAWNED Bucket Hat"
-          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
+        <img src="hat.jpg" alt="PAWNED Bucket Hat" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
         <div class="product-placeholder" style="display:none">
-          <span class="ph-icon">&#9817;</span>
-          <span class="ph-text">Bucket Hat<br/>Black</span>
+          <span class="ph-icon">&#9817;</span><span class="ph-text">Bucket Hat<br/>Black</span>
         </div>
         <div class="product-overlay">
           <button class="quick-add" data-id="hat-mens" data-name="PAWNED Bucket Hat" data-price="250">QUICK ADD</button>
@@ -356,13 +239,10 @@
         <h3 class="product-name">PAWNED Bucket Hat</h3>
         <div class="product-meta">
           <span class="product-price">R250</span>
-          <div class="product-swatches">
-            <span class="swatch swatch--black active"></span>
-          </div>
+          <div class="product-swatches"><span class="swatch swatch--black active"></span></div>
         </div>
       </div>
     </article>
-
   </div>
 </section>
 
@@ -370,38 +250,29 @@
 <section class="gallery-section">
   <p class="section-label">&#9817; THE WORLD OF PAWNED &#9817;</p>
   <div class="gallery-grid">
-    <div class="gallery-item"><img src="gallery1.jpg" alt="PAWNED Gallery 1" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 01</span></div>'" /></div>
-    <div class="gallery-item"><img src="gallery2.jpg" alt="PAWNED Gallery 2" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 02</span></div>'" /></div>
-    <div class="gallery-item"><img src="gallery4.jpg" alt="PAWNED Gallery 3" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 03</span></div>'" /></div>
-    <div class="gallery-item"><img src="gallery5.jpg" alt="PAWNED Gallery 4" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 04</span></div>'" /></div>
-    <div class="gallery-item"><img src="shirt.jpeg" alt="PAWNED Shirt" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 05</span></div>'" /></div>
-    <div class="gallery-item"><img src="shirt-details.jpeg" alt="PAWNED Shirt Detail" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 06</span></div>'" /></div>
-    <div class="gallery-item"><img src="back1.jpeg" alt="PAWNED Back" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 07</span></div>'" /></div>
-    <div class="gallery-item"><img src="gallery3.jpg" alt="PAWNED Gallery 8" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 08</span></div>'" /></div>
-    <div class="gallery-item"><img src="gallery1.jpg" alt="PAWNED Gallery 9" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 09</span></div>'" /></div>
-    <div class="gallery-item"><img src="gallery2.jpg" alt="PAWNED Gallery 10" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 10</span></div>'" /></div>
-    <div class="gallery-item"><img src="gallery4.jpg" alt="PAWNED Gallery 11" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 11</span></div>'" /></div>
-    <div class="gallery-item"><img src="gallery5.jpg" alt="PAWNED Gallery 12" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 12</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery1.jpg"  alt="PAWNED Gallery 1"  onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 01</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery2.jpg"  alt="PAWNED Gallery 2"  onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 02</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery3.jpg"  alt="PAWNED Gallery 3"  onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 03</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery4.jpg"  alt="PAWNED Gallery 4"  onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 04</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery5.jpg"  alt="PAWNED Gallery 5"  onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 05</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery6.jpg"  alt="PAWNED Gallery 6"  onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 06</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery7.jpg"  alt="PAWNED Gallery 7"  onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 07</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery8.jpg"  alt="PAWNED Gallery 8"  onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 08</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery9.jpg"  alt="PAWNED Gallery 9"  onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 09</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery10.jpg" alt="PAWNED Gallery 10" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 10</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery11.jpg" alt="PAWNED Gallery 11" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 11</span></div>'" /></div>
+    <div class="gallery-item"><img src="gallery12.jpg" alt="PAWNED Gallery 12" onerror="this.parentElement.innerHTML='<div class=gallery-placeholder><span>&#9817;</span><span>GALLERY 12</span></div>'" /></div>
   </div>
 </section>
 
 <!-- CART DRAWER -->
 <aside class="cart-drawer" id="cartDrawer">
-  <div class="cart-header">
-    <h3>YOUR CART</h3>
-    <button class="cart-close" id="cartClose">&#10005;</button>
-  </div>
+  <div class="cart-header"><h3>YOUR CART</h3><button class="cart-close" id="cartClose">&#10005;</button></div>
   <div class="cart-items" id="cartItems">
-    <div class="cart-empty" id="cartEmpty">
-      <span>&#9817;</span>
-      <p>Your cart is empty.<br/>Make your move.</p>
-    </div>
+    <div class="cart-empty" id="cartEmpty"><span>&#9817;</span><p>Your cart is empty.<br/>Make your move.</p></div>
   </div>
   <div class="cart-footer" id="cartFooter" style="display:none">
-    <div class="cart-total">
-      <span>TOTAL</span>
-      <span id="cartTotal">R0</span>
-    </div>
+    <div class="cart-total"><span>TOTAL</span><span id="cartTotal">R0</span></div>
     <button class="checkout-btn" id="checkoutBtn">CHECKOUT</button>
   </div>
 </aside>
@@ -430,8 +301,7 @@
         <h4>03 — PAYMENT</h4>
         <div class="payment-options">
           <label class="payment-option">
-            <input type="radio" name="payment" value="eft" checked />
-            <span>EFT / Bank Transfer</span>
+            <input type="radio" name="payment" value="eft" checked /><span>EFT / Bank Transfer</span>
           </label>
         </div>
         <div class="bank-details" id="bankDetails">
@@ -470,10 +340,7 @@
 <footer class="footer">
   <div class="footer-top">
     <div class="footer-brand">
-      <div class="footer-logo">
-        <span class="logo-icon">&#9817;</span>
-        <span class="logo-text">PAWNED</span>
-      </div>
+      <div class="footer-logo"><span class="logo-icon">&#9817;</span><span class="logo-text">PAWNED</span></div>
       <p class="footer-tagline">From Pawn to King.<br/>From Pawn to Queen.</p>
       <div class="footer-social-links">
         <a href="https://www.instagram.com/pawnedera?igsh=MWlwdnhzOWdtYW8xeA==" target="_blank" rel="noopener" class="footer-social-link">IG</a>
@@ -481,20 +348,9 @@
       </div>
     </div>
     <div class="footer-links">
-      <div class="footer-col">
-        <h4>SHOP</h4>
-        <a href="mens.html">Men's Collection</a>
-        <a href="womens.html">Women's Collection</a>
-      </div>
-      <div class="footer-col">
-        <h4>INFO</h4>
-        <a href="contact.html">Contact</a>
-      </div>
-      <div class="footer-col">
-        <h4>BRAND</h4>
-        <a href="index.html#manifesto">Manifesto</a>
-        <a href="#">Our Story</a>
-      </div>
+      <div class="footer-col"><h4>SHOP</h4><a href="mens.html">Men's Collection</a><a href="womens.html">Women's Collection</a></div>
+      <div class="footer-col"><h4>INFO</h4><a href="contact.html">Contact</a></div>
+      <div class="footer-col"><h4>BRAND</h4><a href="index.html#manifesto">Manifesto</a><a href="#">Our Story</a></div>
     </div>
   </div>
   <div class="footer-divider"></div>
@@ -505,18 +361,6 @@
 </footer>
 
 <script src="main.js"></script>
-<script>
-  // Override validateStep globally for this page — require only 1 char minimum
-  window._validateStepOverride = function(step) {
-    if (step === 1) {
-      const inputs = document.querySelectorAll('#step1 .form-input');
-      for (let i = 0; i < inputs.length; i++) {
-        if (!inputs[i].value || inputs[i].value.trim().length < 1) return false;
-      }
-    }
-    return true;
-  };
-</script>
 <!-- coded by Jesus NK Kanku -->
 </body>
 </html>
