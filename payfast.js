@@ -7,8 +7,8 @@
   'use strict';
 
   /* ── PAYFAST CONFIG ── */
-  const MERCHANT_ID  = '10048926';
-  const MERCHANT_KEY = '6iaubo3lrq8zw';
+  const MERCHANT_ID  = '34978579';
+  const MERCHANT_KEY = 'md7dz8adcyi9x';
   const PASSPHRASE   = ''; // Add your passphrase here if you set one in PayFast settings
   const RETURN_URL   = 'https://pawnedera.vercel.app/success.html';
   const CANCEL_URL   = 'https://pawnedera.vercel.app/cancel.html';
@@ -16,7 +16,7 @@
 
   /* ── LIVE vs SANDBOX ──
      Change to false when you're ready to go live */
-  const SANDBOX_MODE = true;
+  const SANDBOX_MODE = false;
 
   const PAYFAST_URL = SANDBOX_MODE
     ? 'https://sandbox.payfast.co.za/eng/process'
