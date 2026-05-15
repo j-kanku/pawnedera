@@ -1,16 +1,17 @@
 /* ============================
    PAWNED — main.js
-   Cart + straight-to-PayFast checkout
+   Cart + Checkout Modal + PayFast + Dual EmailJS
 ============================ */
 
 (function () {
   'use strict';
 
   /* ── EMAILJS CONFIG ── */
-  const EMAILJS_PUBLIC_KEY  = 'rN5d01lajNY4AbV8u';
-  const EMAILJS_SERVICE_ID  = 'service_svs3fs5';
-  const EMAILJS_TEMPLATE_ID = 'template_6dmry46';
-  const OWNER_EMAIL         = 'jesus14kanku@gmail.com';
+  const EMAILJS_PUBLIC_KEY       = 'rN5d01lajNY4AbV8u';
+  const EMAILJS_SERVICE_ID       = 'service_svs3fs5';
+  const EMAILJS_CUSTOMER_TEMPLATE = 'template_6dmry46';  // customer confirmation
+  const EMAILJS_OWNER_TEMPLATE    = 'template_j53odmc';  // owner notification
+  const OWNER_EMAIL              = 'jesus14kanku@gmail.com';
 
   /* ── LOAD EMAILJS SDK ── */
   (function loadEmailJS() {
@@ -30,8 +31,8 @@
 
   /* ── MOBILE MENU ── */
   function setupMobileMenu() {
-    const hamburger  = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobileMenu');
+    const hamburger   = document.getElementById('hamburger');
+    const mobileMenu  = document.getElementById('mobileMenu');
     const mobileClose = document.getElementById('mobileClose');
     const mobileLinks = document.querySelectorAll('.mobile-link');
 
@@ -193,70 +194,188 @@
   setupFilter('mensFilters',   'mensGrid');
   setupFilter('womensFilters', 'womensGrid');
 
-  /* ── CHECKOUT → STRAIGHT TO PAYFAST ── */
-  const checkoutBtn = document.getElementById('checkoutBtn');
+  /* ── CHECKOUT MODAL ── */
+  const checkoutModal = document.getElementById('checkoutModal');
+  const checkoutClose = document.getElementById('checkoutClose');
+  const nextStepBtn   = document.getElementById('nextStep');
+  const prevStepBtn   = document.getElementById('prevStep');
+
+  let currentStep = 1;
+  const TOTAL_STEPS = 2; // Contact → Delivery → PayFast (no step 3 modal, goes straight to PayFast)
+
+  function openCheckoutModal() {
+    if (!checkoutModal) return;
+    currentStep = 1;
+    showStep(1);
+    checkoutModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCheckoutModal() {
+    if (!checkoutModal) return;
+    checkoutModal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function showStep(step) {
+    document.querySelectorAll('.checkout-step').forEach(function (el, idx) {
+      el.classList.toggle('active', idx + 1 === step);
+    });
+    if (prevStepBtn) prevStepBtn.style.display = step > 1 ? 'inline-block' : 'none';
+    if (nextStepBtn) nextStepBtn.textContent = step === TOTAL_STEPS ? 'PAY NOW' : 'CONTINUE';
+  }
+
+  if (checkoutClose) checkoutClose.addEventListener('click', closeCheckoutModal);
+  if (checkoutModal) checkoutModal.addEventListener('click', function (e) {
+    if (e.target === checkoutModal) closeCheckoutModal();
+  });
+
+  if (prevStepBtn) prevStepBtn.addEventListener('click', function () {
+    if (currentStep > 1) { currentStep--; showStep(currentStep); }
+  });
+
+  if (nextStepBtn) nextStepBtn.addEventListener('click', function () {
+    if (!validateStep(currentStep)) return;
+    if (currentStep < TOTAL_STEPS) {
+      currentStep++;
+      showStep(currentStep);
+    } else {
+      // Last step — collect data and go to PayFast
+      proceedToPayFast();
+    }
+  });
+
+  function validateStep(step) {
+    if (step === 1) {
+      const inputs = document.querySelectorAll('#step1 .form-input');
+      const email = inputs[0] ? inputs[0].value.trim() : '';
+      const name  = inputs[1] ? inputs[1].value.trim() : '';
+      if (!email || !email.includes('@')) {
+        showToast('Please enter a valid email address');
+        return false;
+      }
+      if (!name) {
+        showToast('Please enter your name');
+        return false;
+      }
+    }
+    if (step === 2) {
+      const inputs = document.querySelectorAll('#step2 .form-input');
+      const address = inputs[0] ? inputs[0].value.trim() : '';
+      const city    = inputs[1] ? inputs[1].value.trim() : '';
+      if (!address) { showToast('Please enter your street address'); return false; }
+      if (!city)    { showToast('Please enter your city'); return false; }
+    }
+    return true;
+  }
+
+  function getFormData() {
+    const step1Inputs = document.querySelectorAll('#step1 .form-input');
+    const step2Inputs = document.querySelectorAll('#step2 .form-input');
+
+    const fullName = step1Inputs[1] ? step1Inputs[1].value.trim() : '';
+    const nameParts = fullName.split(' ');
+    const firstName = nameParts[0] || 'Customer';
+    const lastName  = nameParts.slice(1).join(' ') || '';
+
+    return {
+      email    : step1Inputs[0] ? step1Inputs[0].value.trim() : '',
+      firstName: firstName,
+      lastName : lastName,
+      fullName : fullName,
+      phone    : step1Inputs[2] ? step1Inputs[2].value.trim() : '',
+      address  : step2Inputs[0] ? step2Inputs[0].value.trim() : '',
+      city     : step2Inputs[1] ? step2Inputs[1].value.trim() : '',
+      province : step2Inputs[2] ? step2Inputs[2].value.trim() : '',
+      postal   : step2Inputs[3] ? step2Inputs[3].value.trim() : '',
+    };
+  }
 
   function generateOrderRef() {
     return 'PWN' + Date.now().toString().slice(-6);
   }
 
-  function goToPayFast() {
+  function proceedToPayFast() {
     if (cart.length === 0) return;
-    closeCart();
 
-    const orderData = {
-      orderNumber : generateOrderRef(),
-      email       : '',
-      firstName   : 'Customer',
-      lastName    : '',
-      phone       : '',
-      address     : '',
-      city        : '',
-      province    : '',
-      postal      : '',
-      items       : cart.map(i => ({ name: i.name, price: i.price, qty: i.qty })),
-      total       : getTotal(),
-    };
+    const formData   = getFormData();
+    const orderNumber = generateOrderRef();
+    const items      = cart.map(i => ({ name: i.name, price: i.price, qty: i.qty }));
+    const total      = getTotal();
+    const itemsText  = items.map(i => i.qty + 'x ' + i.name + ' — R' + (i.price * i.qty).toFixed(2)).join('\n');
 
     /* Save for success page */
     try {
-      localStorage.setItem('pawned_last_order', JSON.stringify({
-        orderNumber : orderData.orderNumber,
-        total       : orderData.total,
-        items       : orderData.items,
-      }));
+      localStorage.setItem('pawned_last_order', JSON.stringify({ orderNumber, total, items }));
     } catch(e) {}
 
-    /* Notify owner by email */
+    /* ── EMAIL 1: Owner notification ── */
     try {
-      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-        to_email    : OWNER_EMAIL,
-        to_name     : 'PAWNED',
-        email_type  : 'owner',
-        order_number: orderData.orderNumber,
-        order_items : orderData.items.map(i => i.qty + 'x ' + i.name + ' — R' + (i.price * i.qty).toFixed(2)).join('\n'),
-        order_total : 'R' + orderData.total.toFixed(2),
+      emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_OWNER_TEMPLATE, {
+        order_number   : orderNumber,
+        order_items    : itemsText,
+        order_total    : 'R' + total.toFixed(2),
+        customer_name  : formData.fullName,
+        customer_email : formData.email,
+        customer_phone : formData.phone || 'Not provided',
+        address        : formData.address,
+        city           : formData.city,
+        province       : formData.province || 'Not provided',
+        postal         : formData.postal   || 'Not provided',
       }).catch(function (err) { console.error('Owner email failed:', err); });
-    } catch(e) {}
+    } catch(e) { console.error('Owner email error:', e); }
+
+    /* ── EMAIL 2: Customer confirmation ── */
+    if (formData.email) {
+      try {
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_CUSTOMER_TEMPLATE, {
+          to_email    : formData.email,
+          to_name     : formData.fullName || 'Valued Customer',
+          order_number: orderNumber,
+          order_items : itemsText,
+          order_total : 'R' + total.toFixed(2),
+        }).catch(function (err) { console.error('Customer email failed:', err); });
+      } catch(e) { console.error('Customer email error:', e); }
+    }
 
     /* Clear cart */
     cart = [];
     saveCart();
     updateCartCount();
 
+    /* Close modal */
+    closeCheckoutModal();
+
     /* Go to PayFast */
+    const orderData = {
+      orderNumber,
+      email    : formData.email,
+      firstName: formData.firstName,
+      lastName : formData.lastName,
+      phone    : formData.phone,
+      address  : formData.address,
+      city     : formData.city,
+      province : formData.province,
+      postal   : formData.postal,
+      items,
+      total,
+    };
+
     if (typeof window.launchPayFast === 'function') {
       window.launchPayFast(orderData);
     } else {
-      console.error('payfast.js not loaded — make sure it is included before main.js');
+      console.error('payfast.js not loaded');
       showToast('Payment error — please refresh and try again');
     }
   }
 
+  /* ── CHECKOUT BUTTON → OPEN MODAL ── */
+  const checkoutBtn = document.getElementById('checkoutBtn');
   if (checkoutBtn) {
     checkoutBtn.addEventListener('click', function () {
       if (cart.length === 0) return;
-      goToPayFast();
+      closeCart();
+      setTimeout(openCheckoutModal, 300); // slight delay so cart closes smoothly
     });
   }
 
