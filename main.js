@@ -1,6 +1,6 @@
 /* ============================
    PAWNED — main.js
-   Full cart + EmailJS emails
+   Full cart + PayFast payments + EmailJS emails
 ============================ */
 
 (function () {
@@ -10,7 +10,7 @@
   const EMAILJS_PUBLIC_KEY   = 'rN5d01lajNY4AbV8u';
   const EMAILJS_SERVICE_ID   = 'service_svs3fs5';
   const EMAILJS_TEMPLATE_ID  = 'template_6dmry46';
-  const OWNER_EMAIL          = 'lesegokatugga3@gmail.com';
+  const OWNER_EMAIL          = 'jesus14kanku@gmail.com';
 
   /* ── LOAD EMAILJS SDK ── */
   (function loadEmailJS() {
@@ -55,7 +55,7 @@
 
   function saveCart()     { try { localStorage.setItem('pawned_cart', JSON.stringify(cart)); } catch (e) {} }
   function getTotal()     { return cart.reduce((sum, item) => sum + item.price * item.qty, 0); }
-  function formatPrice(v) { return 'R' + Number(v).toLocaleString('en-ZA'); }
+  function formatPrice(v) { return 'R' + Number(v).toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
 
   /* ── CART UI ── */
   const cartDrawer  = document.getElementById('cartDrawer');
@@ -144,7 +144,7 @@
   window.addToCart = function (id, name, price) {
     const existing = cart.find(i => i.id === id);
     if (existing) { existing.qty++; }
-    else { cart.push({ id: id, name: name, price: parseInt(price), qty: 1 }); }
+    else { cart.push({ id: id, name: name, price: parseFloat(price), qty: 1 }); }
     saveCart(); updateCartCount();
     showToast(name + ' added to cart');
   };
@@ -202,18 +202,13 @@
   const checkoutClose = document.getElementById('checkoutClose');
   const nextStepBtn   = document.getElementById('nextStep');
   const prevStepBtn   = document.getElementById('prevStep');
-  const bankDetails   = document.getElementById('bankDetails');
-  const successModal  = document.getElementById('successModal');
-  const successClose  = document.getElementById('successClose');
-  const orderRef      = document.getElementById('orderRef');
-  const successOrderRef = document.getElementById('successOrderRef');
 
   function showStep(n) {
     document.querySelectorAll('.checkout-step').forEach(function (s, i) {
       s.classList.toggle('active', i + 1 === n);
     });
     if (prevStepBtn) prevStepBtn.style.display = n === 1 ? 'none' : 'inline-block';
-    if (nextStepBtn) nextStepBtn.textContent   = n === totalSteps ? 'PLACE ORDER' : 'CONTINUE';
+    if (nextStepBtn) nextStepBtn.textContent   = n === totalSteps ? 'PAY NOW' : 'CONTINUE';
   }
 
   if (checkoutBtn) {
@@ -236,13 +231,12 @@
     });
   }
 
-  /* ── STEP VALIDATION — require at least 1 character in each field ── */
+  /* ── STEP VALIDATION ── */
   function validateStep(step) {
     if (step === 1) {
       const inputs = document.querySelectorAll('#step1 .form-input');
       for (let i = 0; i < inputs.length; i++) {
         if (!inputs[i].value || inputs[i].value.trim().length < 1) {
-          // Highlight the empty field subtly instead of a blocking toast
           inputs[i].style.borderColor = '#c9a84c';
           inputs[i].focus();
           setTimeout(function() { inputs[i].style.borderColor = ''; }, 1500);
@@ -250,7 +244,6 @@
         }
       }
     }
-    // Steps 2 and 3 — accept whatever the user enters, no validation
     return true;
   }
 
@@ -271,28 +264,16 @@
     });
   }
 
-  document.querySelectorAll('input[name="payment"]').forEach(radio => {
-    radio.addEventListener('change', function () {
-      if (bankDetails) bankDetails.style.display = radio.value === 'eft' ? 'block' : 'none';
-    });
-  });
-
   function generateOrderRef() {
-    return 'PWN' + Date.now().toString().slice(-5);
+    return 'PWN' + Date.now().toString().slice(-6);
   }
 
-  function formatOrderItems() {
-    return cart.map(function (item) {
-      return item.qty + 'x ' + item.name + ' — ' + formatPrice(item.price * item.qty);
-    }).join('\n');
-  }
-
-  function sendEmails(orderData) {
+  function sendConfirmationEmail(orderData) {
     const baseParams = {
       order_number     : orderData.orderNumber,
-      order_items      : orderData.items,
-      order_total      : orderData.total,
-      customer_name    : orderData.name,
+      order_items      : orderData.items.map(i => i.qty + 'x ' + i.name + ' — R' + (i.price * i.qty).toFixed(2)).join('\n'),
+      order_total      : 'R' + orderData.total.toFixed(2),
+      customer_name    : orderData.firstName + ' ' + orderData.lastName,
       customer_email   : orderData.email,
       customer_phone   : orderData.phone,
       customer_address : orderData.address,
@@ -300,60 +281,75 @@
       customer_province: orderData.province,
       customer_postal  : orderData.postal,
     };
+
+    /* Owner notification */
     emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, Object.assign({}, baseParams, {
       to_email: OWNER_EMAIL, to_name: 'PAWNED', email_type: 'owner'
     })).catch(function (err) { console.error('Owner email failed:', err); });
 
+    /* Customer confirmation */
     if (orderData.email && orderData.email.length > 3) {
       emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, Object.assign({}, baseParams, {
-        to_email: orderData.email, to_name: orderData.name, email_type: 'customer'
+        to_email: orderData.email, to_name: orderData.firstName, email_type: 'customer'
       })).catch(function (err) { console.error('Customer email failed:', err); });
     }
   }
 
+  /* ── PLACE ORDER → PAYFAST ── */
   function placeOrder() {
-    const ref = generateOrderRef();
     const step1Inputs = document.querySelectorAll('#step1 .form-input');
     const step2Inputs = document.querySelectorAll('#step2 .form-input');
 
+    const emailVal = step1Inputs[0] ? step1Inputs[0].value.trim() : '';
+    const fullName = step1Inputs[1] ? step1Inputs[1].value.trim() : '';
+    const nameParts = fullName.split(' ');
+    const firstName = nameParts[0] || 'Customer';
+    const lastName  = nameParts.slice(1).join(' ') || '-';
+
     const orderData = {
-      orderNumber : ref,
-      email       : step1Inputs[0] ? step1Inputs[0].value.trim() : '',
-      name        : step1Inputs[1] ? step1Inputs[1].value.trim() : '',
+      orderNumber : generateOrderRef(),
+      email       : emailVal,
+      firstName   : firstName,
+      lastName    : lastName,
       phone       : step1Inputs[2] ? step1Inputs[2].value.trim() : '',
       address     : step2Inputs[0] ? step2Inputs[0].value.trim() : '',
       city        : step2Inputs[1] ? step2Inputs[1].value.trim() : '',
       province    : step2Inputs[2] ? step2Inputs[2].value.trim() : '',
       postal      : step2Inputs[3] ? step2Inputs[3].value.trim() : '',
-      items       : formatOrderItems(),
-      total       : formatPrice(getTotal()),
+      items       : cart.map(i => ({ name: i.name, price: i.price, qty: i.qty })),
+      total       : getTotal(),
     };
 
-    if (nextStepBtn) { nextStepBtn.disabled = true; nextStepBtn.textContent = 'SENDING...'; }
-    sendEmails(orderData);
+    /* Save order details for the success page */
+    try {
+      localStorage.setItem('pawned_last_order', JSON.stringify({
+        orderNumber: orderData.orderNumber,
+        total: orderData.total,
+        items: orderData.items,
+      }));
+    } catch(e) {}
 
-    if (orderRef)        orderRef.textContent        = ref;
-    if (successOrderRef) successOrderRef.textContent = ref;
+    /* Send email notification */
+    sendConfirmationEmail(orderData);
 
-    if (checkoutModal) checkoutModal.style.display = 'none';
-    if (successModal)  successModal.style.display  = 'flex';
-
+    /* Clear cart */
     cart = [];
     saveCart();
     updateCartCount();
 
-    if (nextStepBtn) { nextStepBtn.disabled = false; nextStepBtn.textContent = 'PLACE ORDER'; }
-  }
+    if (nextStepBtn) { nextStepBtn.disabled = true; nextStepBtn.textContent = 'REDIRECTING...'; }
 
-  if (successClose) {
-    successClose.addEventListener('click', function () {
-      if (successModal) successModal.style.display = 'none';
-    });
-  }
-  if (successModal) {
-    successModal.addEventListener('click', function (e) {
-      if (e.target === successModal) successModal.style.display = 'none';
-    });
+    /* Small delay to let the button update visually before redirect */
+    setTimeout(function () {
+      if (typeof window.launchPayFast === 'function') {
+        window.launchPayFast(orderData);
+      } else {
+        console.error('PayFast script not loaded.');
+        nextStepBtn.disabled = false;
+        nextStepBtn.textContent = 'PAY NOW';
+        showToast('Payment error — please try again');
+      }
+    }, 300);
   }
 
   /* ── SCROLL REVEAL ── */
