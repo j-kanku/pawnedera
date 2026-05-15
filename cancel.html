@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PAWNED | Payment Cancelled</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Bebas+Neue&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .cancel-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--black);
+      padding: 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cancel-page::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(107,26,26,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cancel-watermark {
+      position: absolute;
+      font-size: clamp(12rem, 40vw, 28rem);
+      color: rgba(107,26,26,0.05);
+      bottom: -4rem;
+      right: -2rem;
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
+    }
+    .cancel-content {
+      position: relative;
+      z-index: 2;
+      max-width: 480px;
+    }
+    .cancel-icon {
+      font-size: 3.5rem;
+      color: var(--grey);
+      margin-bottom: 1.5rem;
+      display: block;
+      animation: fadeUp 0.8s 0.2s both;
+    }
+    .cancel-label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.35em;
+      color: var(--grey);
+      margin-bottom: 1rem;
+      animation: fadeUp 0.8s 0.4s both;
+    }
+    .cancel-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      letter-spacing: 0.08em;
+      line-height: 1;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s 0.5s both;
+    }
+    .cancel-message {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.05rem;
+      color: rgba(245,245,240,0.55);
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.8s 0.6s both;
+    }
+    .cancel-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.7s both;
+    }
+    .btn-primary {
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      color: var(--black);
+      background: var(--gold);
+      padding: 0.9rem 2rem;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.3s ease;
+    }
+    .btn-primary:hover { background: var(--gold-light); }
+    .btn-secondary {
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: var(--grey);
+      background: transparent;
+      padding: 0.9rem 2rem;
+      border: 1px solid var(--grey-dark);
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+    .btn-secondary:hover { color: var(--white); border-color: var(--white); }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav scrolled" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="logo-text">PAWNED</span></a>
+    <ul class="nav-links">
+      <li><a href="mens.html" class="nav-link">MEN</a></li>
+      <li><a href="womens.html" class="nav-link">WOMEN</a></li>
+      <li><a href="index.html#manifesto" class="nav-link">MANIFESTO</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">&#10005;</button>
+  <ul>
+    <li><a href="mens.html" class="mobile-link">MEN</a></li>
+    <li><a href="womens.html" class="mobile-link">WOMEN</a></li>
+    <li><a href="index.html#manifesto" class="mobile-link">MANIFESTO</a></li>
+  </ul>
+  <div class="mobile-bottom"><p class="chess-quote">"From Pawn to King"</p></div>
+</div>
+
+<div class="cancel-page">
+  <div class="cancel-watermark">&#9817;</div>
+  <div class="cancel-content">
+    <span class="cancel-icon">&#9817;</span>
+    <p class="cancel-label">PAYMENT CANCELLED</p>
+    <h1 class="cancel-title">NOT YOUR<br/>MOVE YET</h1>
+    <p class="cancel-message">
+      Your payment was cancelled.<br/>
+      No charge was made. Your pieces are still on the board — come back when you're ready.
+    </p>
+    <div class="cancel-actions">
+      <a href="mens.html" class="btn-primary">BACK TO SHOP</a>
+      <a href="index.html" class="btn-secondary">HOME</a>
+    </div>
+  </div>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
