@@ -9,7 +9,7 @@
   /* ── PAYFAST CONFIG ── */
   const MERCHANT_ID  = '10048926';
   const MERCHANT_KEY = '6iaubo3lrq8zw';
-  const PASSPHRASE   = 'Pawned is 1 of 1'; // Add your passphrase here if you set one in PayFast settings
+  const PASSPHRASE   = ''; // Add your passphrase here if you set one in PayFast settings
   const RETURN_URL   = 'https://pawnedera.vercel.app/success.html';
   const CANCEL_URL   = 'https://pawnedera.vercel.app/cancel.html';
   const NOTIFY_URL   = ''; // Optional: your server webhook URL
