@@ -1,6 +1,6 @@
 /* ============================
    PAWNED — payfast.js
-   PayFast payment integration
+   PayFast payment integration (FIXED)
 ============================ */
 
 (function () {
@@ -22,167 +22,101 @@
     ? 'https://sandbox.payfast.co.za/eng/process'
     : 'https://www.payfast.co.za/eng/process';
 
-  /* ── MD5 SIGNATURE (simple, client-side) ── */
-  /* NOTE: For production with a passphrase, signature should be
-     generated server-side to keep passphrase secret.
-     For now this works perfectly for getting started. */
-
+  /* ── BUILD SIGNATURE ──
+     PayFast requires fields in a specific order.
+     Empty fields must be excluded entirely.
+     Encoding: encodeURIComponent with spaces as '+'. */
   function buildSignature(data) {
-    const str = Object.entries(data)
+    const pfEncode = (val) =>
+      encodeURIComponent(String(val).trim()).replace(/%20/g, '+');
+
+    const parts = Object.entries(data)
       .filter(([, v]) => v !== '' && v !== null && v !== undefined)
-      .map(([k, v]) => k + '=' + encodeURIComponent(String(v).trim()).replace(/%20/g, '+'))
-      .join('&');
-    const withPass = PASSPHRASE ? str + '&passphrase=' + encodeURIComponent(PASSPHRASE.trim()).replace(/%20/g, '+') : str;
-    return md5(withPass);
+      .map(([k, v]) => k + '=' + pfEncode(v));
+
+    let str = parts.join('&');
+    if (PASSPHRASE) {
+      str += '&passphrase=' + pfEncode(PASSPHRASE);
+    }
+
+    return SparkMD5.hash(str);
   }
 
-  /* ── LAUNCH PAYFAST ── */
-  window.launchPayFast = function (orderData) {
-    const itemName = orderData.items.length === 1
-      ? orderData.items[0].name
-      : 'PAWNED Order — ' + orderData.items.length + ' items';
-
-    const data = {
-      merchant_id:   MERCHANT_ID,
-      merchant_key:  MERCHANT_KEY,
-      return_url:    RETURN_URL,
-      cancel_url:    CANCEL_URL,
-      name_first:    orderData.firstName,
-      name_last:     orderData.lastName,
-      email_address: orderData.email,
-      cell_number:   orderData.phone,
-      m_payment_id:  orderData.orderNumber,
-      amount:        orderData.total.toFixed(2),
-      item_name:     itemName,
-      item_description: orderData.items.map(i => i.qty + 'x ' + i.name).join(', '),
-      custom_str1:   orderData.address,
-      custom_str2:   orderData.city,
-      custom_str3:   orderData.province,
-      custom_str4:   orderData.postal,
-      email_confirmation: '1',
-      confirmation_address: orderData.email,
+  /* ── LOAD SPARK-MD5 (reliable library) then expose launchPayFast ── */
+  (function loadSparkMD5() {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/spark-md5@3.0.2/spark-md5.min.js';
+    script.onload = definelaunchPayFast;
+    script.onerror = function () {
+      console.error('Failed to load SparkMD5 — PayFast will not work');
     };
+    document.head.appendChild(script);
+  })();
 
-    if (NOTIFY_URL) data.notify_url = NOTIFY_URL;
+  function definelaunchPayFast() {
+    /* ── LAUNCH PAYFAST ── */
+    window.launchPayFast = function (orderData) {
+      const itemName = orderData.items.length === 1
+        ? orderData.items[0].name
+        : 'PAWNED Order — ' + orderData.items.length + ' items';
 
-    data.signature = buildSignature(data);
+      /* PayFast field ORDER matters for signature — keep this sequence */
+      const data = {};
 
-    /* Build and auto-submit the form */
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = PAYFAST_URL;
-    form.style.display = 'none';
+      /* Merchant details */
+      data.merchant_id  = MERCHANT_ID;
+      data.merchant_key = MERCHANT_KEY;
 
-    Object.entries(data).forEach(([key, value]) => {
-      if (value === '' || value === null || value === undefined) return;
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = key;
-      input.value = String(value).trim();
-      form.appendChild(input);
-    });
+      /* URLs */
+      data.return_url = RETURN_URL;
+      data.cancel_url = CANCEL_URL;
+      if (NOTIFY_URL) data.notify_url = NOTIFY_URL;
 
-    document.body.appendChild(form);
-    form.submit();
-  };
+      /* Buyer info — only add if non-empty */
+      if (orderData.firstName) data.name_first    = orderData.firstName;
+      if (orderData.lastName)  data.name_last     = orderData.lastName;
+      if (orderData.email)     data.email_address = orderData.email;
+      if (orderData.phone)     data.cell_number   = orderData.phone;
 
-  /* ── TINY MD5 IMPLEMENTATION ──
-     (c) Joseph Myers — MIT License
-     https://www.myersdaily.org/joseph/javascript/md5-text.html */
-  function md5(str) {
-    function safeAdd(x, y) {
-      var lsw = (x & 0xffff) + (y & 0xffff);
-      var msw = (x >> 16) + (y >> 16) + (lsw >> 16);
-      return (msw << 16) | (lsw & 0xffff);
-    }
-    function bitRotateLeft(num, cnt) { return (num << cnt) | (num >>> (32 - cnt)); }
-    function md5cmn(q, a, b, x, s, t) { return safeAdd(bitRotateLeft(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b); }
-    function md5ff(a,b,c,d,x,s,t) { return md5cmn((b&c)|((~b)&d),a,b,x,s,t); }
-    function md5gg(a,b,c,d,x,s,t) { return md5cmn((b&d)|(c&(~d)),a,b,x,s,t); }
-    function md5hh(a,b,c,d,x,s,t) { return md5cmn(b^c^d,a,b,x,s,t); }
-    function md5ii(a,b,c,d,x,s,t) { return md5cmn(c^(b|(~d)),a,b,x,s,t); }
-    function md5blks(s) {
-      var i, blks = [];
-      for (i=0;i<s.length+8;i+=16) blks[i>>4]=0;
-      blks[(s.length>>2)|14]=s.length*8;
-      for (i=0;i<s.length;i++) blks[i>>2]|=s.charCodeAt(i)<<((i%4)*8);
-      return blks;
-    }
-    function md5blk(s) {
-      var md5blks=[],i;
-      for (i=0;i<64;i+=4) md5blks[i>>2]=s.charCodeAt(i)+(s.charCodeAt(i+1)<<8)+(s.charCodeAt(i+2)<<16)+(s.charCodeAt(i+3)<<24);
-      return md5blks;
-    }
-    var hex_chr='0123456789abcdef'.split('');
-    function rhex(n) {
-      var s='',j;
-      for (j=0;j<4;j++) s+=hex_chr[(n>>(j*8+4))&0x0f]+hex_chr[(n>>(j*8))&0x0f];
-      return s;
-    }
-    function hex(x) { for (var i=0;i<x.length;i++) x[i]=rhex(x[i]); return x.join(''); }
-    function add32(a,b) { return (a+b)&0xffffffff; }
-    function md5core(x,len) {
-      x[len>>5]|=0x80<<(len%32);
-      x[(((len+64)>>>9)<<4)+14]=len;
-      var a=1732584193,b=-271733879,c=-1732584194,d=271733878,i;
-      for (i=0;i<x.length;i+=16) {
-        var olda=a,oldb=b,oldc=c,oldd=d;
-        a=md5ff(a,b,c,d,x[i],7,-680876936);d=md5ff(d,a,b,c,x[i+1],12,-389564586);c=md5ff(c,d,a,b,x[i+2],17,606105819);b=md5ff(b,c,d,a,x[i+3],22,-1044525330);
-        a=md5ff(a,b,c,d,x[i+4],7,-176418897);d=md5ff(d,a,b,c,x[i+5],12,1200080426);c=md5ff(c,d,a,b,x[i+6],17,-1473231341);b=md5ff(b,c,d,a,x[i+7],22,-45705983);
-        a=md5ff(a,b,c,d,x[i+8],7,1770035416);d=md5ff(d,a,b,c,x[i+9],12,-1958414417);c=md5ff(c,d,a,b,x[i+10],17,-42063);b=md5ff(b,c,d,a,x[i+11],22,-1990404162);
-        a=md5ff(a,b,c,d,x[i+12],7,1804603682);d=md5ff(d,a,b,c,x[i+13],12,-40341101);c=md5ff(c,d,a,b,x[i+14],17,-1502002290);b=md5ff(b,c,d,a,x[i+15],22,1236535329);
-        a=md5gg(a,b,c,d,x[i+1],5,-165796510);d=md5gg(d,a,b,c,x[i+6],9,-1069501632);c=md5gg(c,d,a,b,x[i+11],14,643717713);b=md5gg(b,c,d,a,x[i],20,-373897302);
-        a=md5gg(a,b,c,d,x[i+5],5,-701558691);d=md5gg(d,a,b,c,x[i+10],9,38016083);c=md5gg(c,d,a,b,x[i+15],14,-660478335);b=md5gg(b,c,d,a,x[i+4],20,-405537848);
-        a=md5gg(a,b,c,d,x[i+9],5,568446438);d=md5gg(d,a,b,c,x[i+14],9,-1019803690);c=md5gg(c,d,a,b,x[i+3],14,-187363961);b=md5gg(b,c,d,a,x[i+8],20,1163531501);
-        a=md5gg(a,b,c,d,x[i+13],5,-1444681467);d=md5gg(d,a,b,c,x[i+2],9,-51403784);c=md5gg(c,d,a,b,x[i+7],14,1735328473);b=md5gg(b,c,d,a,x[i+12],20,-1926607734);
-        a=md5hh(a,b,c,d,x[i+5],4,-378558);d=md5hh(d,a,b,c,x[i+8],11,-2022574463);c=md5hh(c,d,a,b,x[i+11],16,1839030562);b=md5hh(b,c,d,a,x[i+14],23,-35309556);
-        a=md5hh(a,b,c,d,x[i+1],4,-1530992060);d=md5hh(d,a,b,c,x[i+4],11,1272893353);c=md5hh(c,d,a,b,x[i+7],16,-155497632);b=md5hh(b,c,d,a,x[i+10],23,-1094730640);
-        a=md5hh(a,b,c,d,x[i+13],4,681279174);d=md5hh(d,a,b,c,x[i],11,-358537222);c=md5hh(c,d,a,b,x[i+3],16,-722521979);b=md5hh(b,c,d,a,x[i+6],23,76029189);
-        a=md5hh(a,b,c,d,x[i+9],4,-640364487);d=md5hh(d,a,b,c,x[i+12],11,-421815835);c=md5hh(c,d,a,b,x[i+15],16,530742520);b=md5hh(b,c,d,a,x[i+2],23,-995338651);
-        a=md5ii(a,b,c,d,x[i],6,-198630844);d=md5ii(d,a,b,c,x[i+7],10,1126891415);c=md5ii(c,d,a,b,x[i+14],15,-1416354905);b=md5ii(b,c,d,a,x[i+5],21,-57434055);
-        a=md5ii(a,b,c,d,x[i+12],6,1700485571);d=md5ii(d,a,b,c,x[i+3],10,-1894986606);c=md5ii(c,d,a,b,x[i+10],15,-1051523);b=md5ii(b,c,d,a,x[i+1],21,-2054922799);
-        a=md5ii(a,b,c,d,x[i+8],6,1873313359);d=md5ii(d,a,b,c,x[i+15],10,-30611744);c=md5ii(c,d,a,b,x[i+6],15,-1560198380);b=md5ii(b,c,d,a,x[i+13],21,1309151649);
-        a=md5ii(a,b,c,d,x[i+4],6,-145523070);d=md5ii(d,a,b,c,x[i+11],10,-1120210379);c=md5ii(c,d,a,b,x[i+2],15,718787259);b=md5ii(b,c,d,a,x[i+9],21,-343485551);
-        a=add32(a,olda);b=add32(b,oldb);c=add32(c,oldc);d=add32(d,oldd);
-      }
-      return [a,b,c,d];
-    }
-    function md5blk_array(a) {
-      var md5blks=[],i;
-      for (i=0;i<64;i+=4) md5blks[i>>2]=a[i]+(a[i+1]<<8)+(a[i+2]<<16)+(a[i+3]<<24);
-      return md5blks;
-    }
-    function md5_array(a) {
-      var n=a.length,state=[1732584193,-271733879,-1732584194,271733878],i,length8,tail,tmp;
-      for (i=64;i<=n;i+=64) state=md5core(md5blk_array(a.slice(i-64,i)),state[0],state[1],state[2],state[3]);
-      a=a.slice(i-64);length8=a.length;tail=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-      for (i=0;i<length8;i++) tail[i>>2]|=a[i]<<((i%4)*8);
-      tail[i>>2]|=0x80<<((i%4)*8);
-      if (i>55) { md5core(tail,state[0],state[1],state[2],state[3]); tail=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; }
-      tail[14]=n*8;
-      return md5core(tail,state[0],state[1],state[2],state[3]);
-    }
-    function str2rstr_utf8(input) {
-      var x=0,y=-1,output='',i,j;
-      var enumerableStr = input;
-      for (i=0;i<enumerableStr.length;++i) {
-        x=enumerableStr.charCodeAt(i);
-        if (0xD800<=x&&x<=0xDBFF&&i+1<enumerableStr.length) {
-          y=enumerableStr.charCodeAt(i+1);
-          if (0xDC00<=y&&y<=0xDFFF){x=0x10000+((x-0xD800)<<10)+(y-0xDC00);y=-1;}
-        }
-        if (x<=0x7f) output+=String.fromCharCode(x);
-        else if (x<=0x7ff) output+=String.fromCharCode(0xC0|(x>>>6),0x80|(x&0x3F));
-        else if (x<=0xffff) output+=String.fromCharCode(0xE0|(x>>>12),0x80|((x>>>6)&0x3F),0x80|(x&0x3F));
-        else output+=String.fromCharCode(0xF0|(x>>>18),0x80|((x>>>12)&0x3F),0x80|((x>>>6)&0x3F),0x80|(x&0x3F));
-      }
-      return output;
-    }
-    var utf8str = str2rstr_utf8(str);
-    var rawArr = [];
-    for (var i=0;i<utf8str.length;i++) rawArr.push(utf8str.charCodeAt(i));
-    var hashArr = md5_array(rawArr);
-    return hex(hashArr);
+      /* Transaction details */
+      data.m_payment_id = orderData.orderNumber;
+      data.amount       = Number(orderData.total).toFixed(2);
+      data.item_name    = itemName;
+
+      const description = orderData.items.map(i => i.qty + 'x ' + i.name).join(', ');
+      if (description) data.item_description = description;
+
+      /* Custom fields — only if non-empty */
+      if (orderData.address)  data.custom_str1 = orderData.address;
+      if (orderData.city)     data.custom_str2 = orderData.city;
+      if (orderData.province) data.custom_str3 = orderData.province;
+      if (orderData.postal)   data.custom_str4 = orderData.postal;
+
+      /* Email confirmation */
+      data.email_confirmation = '1';
+      if (orderData.email) data.confirmation_address = orderData.email;
+
+      /* Generate signature */
+      data.signature = buildSignature(data);
+
+      /* Build and auto-submit the form */
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = PAYFAST_URL;
+      form.style.display = 'none';
+
+      Object.entries(data).forEach(function ([key, value]) {
+        if (value === '' || value === null || value === undefined) return;
+        const input = document.createElement('input');
+        input.type  = 'hidden';
+        input.name  = key;
+        input.value = String(value).trim();
+        form.appendChild(input);
+      });
+
+      document.body.appendChild(form);
+      form.submit();
+    };
   }
 
 })();
