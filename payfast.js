@@ -16,7 +16,7 @@
 
   /* ── LIVE vs SANDBOX ──
      Change to false when you're ready to go live */
-  const SANDBOX_MODE = false;
+  const SANDBOX_MODE = true;
 
   const PAYFAST_URL = SANDBOX_MODE
     ? 'https://sandbox.payfast.co.za/eng/process'
